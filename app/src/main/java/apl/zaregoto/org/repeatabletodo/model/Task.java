@@ -1,5 +1,8 @@
 package apl.zaregoto.org.repeatabletodo.model;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Task {
 
     private String name;
@@ -9,6 +12,9 @@ public class Task {
     private REPEAT_UNIT repeatUnit;
 
     private boolean repeat;
+
+    private Date lastDate;
+
 
     public enum REPEAT_UNIT {
         DAILY,
@@ -46,4 +52,51 @@ public class Task {
     public boolean isRepeat() {
         return repeat;
     }
+
+    public Date getLastDate() {
+        return lastDate;
+    }
+
+    public void setLastDate(Date date) {
+        this.lastDate = date;
+    }
+
+
+    boolean lastDatePlusRepeatCountIsOver(Date now) {
+
+        boolean ret = false;
+
+        Calendar _lastDate;
+        Date _limitDate = null;
+
+        try {
+            _lastDate = Calendar.getInstance();
+            _lastDate.setTime(lastDate);
+
+            switch (repeatUnit) {
+                case DAILY:
+                    _lastDate.add(Calendar.DATE, repeatCount);
+                    _limitDate = _lastDate.getTime();
+                    break;
+                case WEEKLY:
+                    _lastDate.add(Calendar.DATE, 7*repeatCount);
+                    _limitDate = _lastDate.getTime();
+                    break;
+                case MONTHLY:
+                    _lastDate.add(Calendar.MONTH, repeatCount);
+                    _limitDate = _lastDate.getTime();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (null != _limitDate && _limitDate.before(now)) {
+            ret = true;
+        }
+
+
+        return ret;
+    }
+
 }

@@ -1,6 +1,8 @@
 package apl.zaregoto.org.repeatabletodo.model;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 
 public class TaskList {
 
@@ -27,4 +29,30 @@ public class TaskList {
     public ArrayList<Task> getTasks() {
         return tasks;
     }
+
+
+    public ArrayList<Todo> generateTodoList() {
+
+        ArrayList<Todo> todoList = new ArrayList<>();
+        Iterator<Task> it;
+        Task task;
+        Date date = new Date();
+
+        if (null != tasks) {
+            it = tasks.iterator();
+            while (it.hasNext()) {
+                task = it.next();
+                Date lastDate = task.getLastDate();
+
+                if (task.lastDatePlusRepeatCountIsOver(date)) {
+
+                }
+
+            }
+        }
+
+        return todoList;
+    }
+
+
 }
