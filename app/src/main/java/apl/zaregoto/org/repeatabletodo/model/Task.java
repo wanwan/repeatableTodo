@@ -17,9 +17,30 @@ public class Task {
 
 
     public enum REPEAT_UNIT {
-        DAILY,
-        WEEKLY,
-        MONTHLY,
+        DAILY("DAILY"),
+        WEEKLY("WEEKLY"),
+        MONTHLY("MONTHLY");
+
+        private final String name;
+
+        REPEAT_UNIT(String _name) {
+            name = _name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static REPEAT_UNIT getUnitFromString(String str) {
+
+            for (REPEAT_UNIT ru : REPEAT_UNIT.values()) {
+                if (0 == ru.name.compareTo(str)) {
+                    return ru;
+                }
+            }
+
+            return null;
+        }
     }
 
     private Task() {

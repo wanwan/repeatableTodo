@@ -10,7 +10,7 @@ import android.widget.Toast;
 import apl.zaregoto.org.repeatabletodo.model.Task;
 import apl.zaregoto.org.repeatabletodo.model.TaskList;
 
-public class EditTaskActivity extends Activity {
+public class EditTaskListActivity extends Activity {
 
     private TaskList mTaskList;
 
@@ -26,7 +26,7 @@ public class EditTaskActivity extends Activity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(EditTaskActivity.this, "add task", Toast.LENGTH_LONG).show();
+                Toast.makeText(EditTaskListActivity.this, "add task", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -41,9 +41,11 @@ public class EditTaskActivity extends Activity {
     private TaskList readTaskList() {
         TaskList taskList;
 
-        taskList = new TaskList("test");
-        taskList.addTask(new Task("aaa", "aaadetail", 1, Task.REPEAT_UNIT.DAILY));
-        taskList.addTask(new Task("bbb", "bbbdetail", 2, Task.REPEAT_UNIT.WEEKLY));
+        taskList = TaskList.getTaskList(this);
+
+        //taskList = new TaskList("test");
+        //taskList.addTask(new Task("aaa", "aaadetail", 1, Task.REPEAT_UNIT.DAILY));
+        //taskList.addTask(new Task("bbb", "bbbdetail", 2, Task.REPEAT_UNIT.WEEKLY));
 
         return taskList;
     }

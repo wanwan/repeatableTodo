@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<tasklist version="1.0">
+    <!--
+    <task>
+        <name></name>
+        <detail></detail>
+        <repeatCount></repeatCount>
+        <repeatUnit></repeatUnit>
+        <repeat></repeat>
+        <lastDate></lastDate>
+    </task>
+    -->
+    <task>
+        <name>testname</name>
+        <detail>testdetail</detail>
+        <repeatCount>1</repeatCount>
+        <repeatUnit>WEEKLY</repeatUnit>
+        <repeat>true</repeat>
+        <lastDate></lastDate>
+    </task>
+</tasklist>
