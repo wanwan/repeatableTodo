@@ -9,6 +9,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,6 +81,8 @@ public class TaskList {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return tasklist;
@@ -99,7 +102,7 @@ public class TaskList {
         TASK_LASTDATE,
     }
 
-    public static TaskList getTaskList(Context context, String _fileName) throws FileNotFoundException, XmlPullParserException {
+    public static TaskList getTaskList(Context context, String _fileName) throws IOException, XmlPullParserException {
 
         File dir = context.getFilesDir();
         File xmlFile = new File(dir, _fileName);
@@ -199,6 +202,7 @@ public class TaskList {
                     }
                     break;
             }
+            eventType = xmlPullParser.next();
         }
 
         return taskList;
