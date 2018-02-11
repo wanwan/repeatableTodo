@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="task_name_lbl">タスク</string>
+    <string name="task_detail_lbl">タスク詳細</string>
+    <string name="task_repeat_lbl">繰り返し</string>
+    <string name="task_repeatflag_lbl">繰り返しフラグ</string>
+    <string name="task_dialog_title">タスク入力</string>
+    <string name="task_dialog_btn_ok">OK</string>
+
+    <string-array name="repeatunit_type_array">
+        <item>DAILY</item>
+        <item>WEEKLY</item>
+        <item>MONTHLY</item>
+    </string-array>
+
+</resources>

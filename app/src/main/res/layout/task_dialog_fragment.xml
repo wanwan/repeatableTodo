@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="match_parent"
+             android:layout_marginLeft="15dp"
+             android:layout_marginRight="15dp"
+             android:stretchColumns="1">
+
+    <TableRow>
+        <TextView android:id="@+id/nameLbl"
+                  android:text="@string/task_name_lbl"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+        />
+
+        <EditText android:id="@+id/nameEdit"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+        />
+    </TableRow>
+
+    <TableRow>
+        <TextView android:id="@+id/detailLbl"
+                  android:text="@string/task_detail_lbl"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+        />
+
+        <EditText android:id="@+id/detailEdit"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+        />
+    </TableRow>
+
+    <TableRow>
+        <TextView android:id="@+id/repeatLbl"
+                  android:text="@string/task_repeat_lbl"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+        />
+
+        <EditText android:id="@+id/repeatCountEdit"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:inputType="number"
+        />
+    </TableRow>
+
+
+    <TableRow>
+        <TextView android:id="@+id/repeatSpinnerLbl"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+        />
+
+        <Spinner android:id="@+id/repeatUnitSpinner"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+        />
+    </TableRow>
+
+
+    <TableRow>
+        <TextView android:id="@+id/repeatFlagLbl"
+                  android:text="@string/task_repeatflag_lbl"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+        />
+
+        <CheckBox android:id="@+id/repeatFlag"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+        />
+    </TableRow>
+
+
+
+</TableLayout>

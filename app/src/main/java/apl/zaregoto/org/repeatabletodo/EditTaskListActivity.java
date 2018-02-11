@@ -1,6 +1,7 @@
 package apl.zaregoto.org.repeatabletodo;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
@@ -9,10 +10,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 import apl.zaregoto.org.repeatabletodo.model.Task;
 import apl.zaregoto.org.repeatabletodo.model.TaskList;
+import apl.zaregoto.org.repeatabletodo.ui.EditTaskDialogFragment;
 
-public class EditTaskListActivity extends Activity {
+public class EditTaskListActivity extends Activity implements EditTaskDialogFragment.EditTaskCallback {
 
     private TaskList mTaskList;
+    private ArrayAdapter<Task> adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +29,18 @@ public class EditTaskListActivity extends Activity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(EditTaskListActivity.this, "add task", Toast.LENGTH_LONG).show();
+                //Toast.makeText(EditTaskListActivity.this, "add task", Toast.LENGTH_LONG).show();
+                Task task = new Task();
+                EditTaskDialogFragment dialog = EditTaskDialogFragment.newInstance(task);
+
+                FragmentManager fm = getFragmentManager();
+
+                dialog.show(fm, "");
             }
         });
 
         ListView lv = findViewById(R.id.task_list);
-        ArrayAdapter<Task> adapter = new TaskListAdapter(this, 0, mTaskList.getTasks());
+        adapter = new TaskListAdapter(this, 0, mTaskList.getTasks());
         if (null != lv) {
             lv.setAdapter(adapter);
         }
@@ -48,5 +57,16 @@ public class EditTaskListActivity extends Activity {
         //taskList.addTask(new Task("bbb", "bbbdetail", 2, Task.REPEAT_UNIT.WEEKLY));
 
         return taskList;
+    }
+
+    @Override
+    public void addTask(Task task) {
+
+        mTaskList.addTask(task);
+
+        if (null != adapter) {
+            adapter.notifyDataSetChanged();
+        }
+
     }
 }

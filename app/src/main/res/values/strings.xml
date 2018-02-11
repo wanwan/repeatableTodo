@@ -5,4 +5,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="task_name_lbl">Task</string>
+    <string name="task_detail_lbl">Detail</string>
+    <string name="task_repeat_lbl">Repeat</string>
+    <string name="task_repeatflag_lbl">Repeat Flag</string>
+    <string name="task_dialog_title">Input Task</string>
+    <string name="task_dialog_btn_ok">OK</string>
+
+    <string-array name="repeatunit_type_array">
+        <item>DAILY</item>
+        <item>WEEKLY</item>
+        <item>MONTHLY</item>
+    </string-array>
+
 </resources>

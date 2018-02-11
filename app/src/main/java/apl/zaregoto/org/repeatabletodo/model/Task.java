@@ -1,9 +1,10 @@
 package apl.zaregoto.org.repeatabletodo.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Task {
+public class Task implements Serializable {
 
     private String name;
     private String detail;
@@ -11,7 +12,7 @@ public class Task {
     private int repeatCount;
     private REPEAT_UNIT repeatUnit;
 
-    private boolean repeat;
+    private boolean repeatFlag;
 
     private Date lastDate;
 
@@ -43,8 +44,12 @@ public class Task {
         }
     }
 
-    private Task() {
-        repeat = true;
+    public Task() {
+        this.name = "";
+        this.detail = "";
+        this.repeatCount = 1;
+        this.repeatUnit = REPEAT_UNIT.DAILY;
+        this.repeatFlag = true;
     }
 
     public Task(String _name, String _detail, int _count, REPEAT_UNIT _unit) {
@@ -70,12 +75,32 @@ public class Task {
         return repeatUnit;
     }
 
-    public boolean isRepeat() {
-        return repeat;
+    public boolean isRepeatFlag() {
+        return repeatFlag;
     }
 
     public Date getLastDate() {
         return lastDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public void setRepeatCount(int repeatCount) {
+        this.repeatCount = repeatCount;
+    }
+
+    public void setRepeatUnit(REPEAT_UNIT repeatUnit) {
+        this.repeatUnit = repeatUnit;
+    }
+
+    public void setRepeatFlag(boolean repeatFlag) {
+        this.repeatFlag = repeatFlag;
     }
 
     public void setLastDate(Date date) {
@@ -115,7 +140,6 @@ public class Task {
         if (null != _limitDate && _limitDate.before(now)) {
             ret = true;
         }
-
 
         return ret;
     }
