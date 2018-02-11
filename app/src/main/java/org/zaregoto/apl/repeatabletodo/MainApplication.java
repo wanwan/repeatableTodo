@@ -27,7 +27,6 @@ public class MainApplication extends Application {
         return taskList;
     }
 
-
     public void setTaskList(TaskList _taskList) {
         this.taskList = _taskList;
     }

@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        TaskList tasklist = TaskList.readTaskListFromFile(this);
+        ((MainApplication)getApplication()).setTaskList(tasklist);
     }
 
     @Override

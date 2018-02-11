@@ -13,14 +13,14 @@ import org.zaregoto.apl.repeatabletodo.ui.EditTaskDialogFragment;
 
 public class EditTaskListActivity extends Activity implements EditTaskDialogFragment.EditTaskCallback {
 
-    private TaskList mTaskList;
+    //private TaskList mTaskList;
     private ArrayAdapter<Task> adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mTaskList = readTaskList();
+        //mTaskList = readTaskList();
 
         setContentView(R.layout.activity_edit_task);
 
@@ -38,8 +38,9 @@ public class EditTaskListActivity extends Activity implements EditTaskDialogFrag
             }
         });
 
+        TaskList tasklist = ((MainApplication)getApplication()).getTaskList();
         ListView lv = findViewById(R.id.task_list);
-        adapter = new TaskListAdapter(this, 0, mTaskList.getTasks());
+        adapter = new TaskListAdapter(this, 0, tasklist.getTasks());
         if (null != lv) {
             lv.setAdapter(adapter);
         }
@@ -49,7 +50,7 @@ public class EditTaskListActivity extends Activity implements EditTaskDialogFrag
     private TaskList readTaskList() {
         TaskList taskList;
 
-        taskList = TaskList.getTaskList(this);
+        taskList = TaskList.readTaskListFromFile(this);
 
         //taskList = new TaskList("test");
         //taskList.addTask(new Task("aaa", "aaadetail", 1, Task.REPEAT_UNIT.DAILY));
@@ -61,7 +62,8 @@ public class EditTaskListActivity extends Activity implements EditTaskDialogFrag
     @Override
     public void addTask(Task task) {
 
-        mTaskList.addTask(task);
+        TaskList tasklist = ((MainApplication)getApplication()).getTaskList();
+        tasklist.addTask(task);
 
         if (null != adapter) {
             adapter.notifyDataSetChanged();

@@ -71,11 +71,11 @@ public class TaskList {
     }
 
 
-    public static TaskList getTaskList(Context context) {
+    public static TaskList readTaskListFromFile(Context context) {
         TaskList tasklist = null;
 
         try {
-            tasklist = getTaskList(context, DEFAULT_TASKLIST_FILENAME);
+            tasklist = readTaskListFromFile(context, DEFAULT_TASKLIST_FILENAME);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (XmlPullParserException e) {
@@ -101,7 +101,7 @@ public class TaskList {
         TASK_LASTDATE,
     }
 
-    public static TaskList getTaskList(Context context, String _fileName) throws IOException, XmlPullParserException {
+    public static TaskList readTaskListFromFile(Context context, String _fileName) throws IOException, XmlPullParserException {
 
         File dir = context.getFilesDir();
         File xmlFile = new File(dir, _fileName);
