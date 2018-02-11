@@ -1,4 +1,4 @@
-package apl.zaregoto.org.repeatabletodo;
+package org.zaregoto.apl.repeatabletodo;
 
 import android.content.BroadcastReceiver;
 import android.content.ClipData;

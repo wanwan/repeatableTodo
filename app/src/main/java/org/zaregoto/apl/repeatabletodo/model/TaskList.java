@@ -1,6 +1,5 @@
-package apl.zaregoto.org.repeatabletodo.model;
+package org.zaregoto.apl.repeatabletodo.model;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Xml;
 import org.xmlpull.v1.XmlPullParser;
@@ -17,7 +16,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-import static apl.zaregoto.org.repeatabletodo.model.TaskList.TASK_PARSER_STATUS.*;
+import static org.zaregoto.apl.repeatabletodo.model.TaskList.TASK_PARSER_STATUS.*;
 
 public class TaskList {
 

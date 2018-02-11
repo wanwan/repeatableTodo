@@ -1,4 +1,4 @@
-package apl.zaregoto.org.repeatabletodo.model;
+package org.zaregoto.apl.repeatabletodo.model;
 
 import java.io.Serializable;
 import java.util.Calendar;

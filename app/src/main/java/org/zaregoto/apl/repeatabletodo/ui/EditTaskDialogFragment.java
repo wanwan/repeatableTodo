@@ -1,4 +1,4 @@
-package apl.zaregoto.org.repeatabletodo.ui;
+package org.zaregoto.apl.repeatabletodo.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import apl.zaregoto.org.repeatabletodo.R;
-import apl.zaregoto.org.repeatabletodo.model.Task;
+import org.zaregoto.apl.repeatabletodo.R;
+import org.zaregoto.apl.repeatabletodo.model.Task;
 
 import java.util.IllegalFormatException;
 

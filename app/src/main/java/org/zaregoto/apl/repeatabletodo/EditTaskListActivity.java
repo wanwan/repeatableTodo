@@ -1,4 +1,4 @@
-package apl.zaregoto.org.repeatabletodo;
+package org.zaregoto.apl.repeatabletodo;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -7,10 +7,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-import apl.zaregoto.org.repeatabletodo.model.Task;
-import apl.zaregoto.org.repeatabletodo.model.TaskList;
-import apl.zaregoto.org.repeatabletodo.ui.EditTaskDialogFragment;
+import org.zaregoto.apl.repeatabletodo.model.Task;
+import org.zaregoto.apl.repeatabletodo.model.TaskList;
+import org.zaregoto.apl.repeatabletodo.ui.EditTaskDialogFragment;
 
 public class EditTaskListActivity extends Activity implements EditTaskDialogFragment.EditTaskCallback {
 

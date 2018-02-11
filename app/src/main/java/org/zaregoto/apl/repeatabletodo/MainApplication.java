@@ -1,8 +1,8 @@
-package apl.zaregoto.org.repeatabletodo;
+package org.zaregoto.apl.repeatabletodo;
 
 import android.app.Application;
 import android.util.Log;
-import apl.zaregoto.org.repeatabletodo.model.TaskList;
+import org.zaregoto.apl.repeatabletodo.model.TaskList;
 
 public class MainApplication extends Application {
 

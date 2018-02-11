@@ -1,4 +1,4 @@
-package apl.zaregoto.org.repeatabletodo;
+package org.zaregoto.apl.repeatabletodo;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import apl.zaregoto.org.repeatabletodo.model.Task;
+import org.zaregoto.apl.repeatabletodo.model.Task;
 
 import java.util.List;
 
