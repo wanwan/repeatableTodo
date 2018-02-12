@@ -11,11 +11,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
+import org.zaregoto.apl.repeatabletodo.util.Utilities;
 
 import java.io.*;
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
                         outputFile.createNewFile();
                     }
                     out = new FileOutputStream(outputFile);
-                    copyFile(is, out);
+                    Utilities.copyFile(is, out);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -137,20 +137,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void copyFile(InputStream in, OutputStream out) {
-
-        try {
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
-            }
-            out.flush();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
     }
 
 

@@ -1,5 +1,10 @@
 package org.zaregoto.apl.repeatabletodo.model;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
+import org.zaregoto.apl.repeatabletodo.util.Utilities;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -147,5 +152,48 @@ public class Task implements Serializable {
 
         return ret;
     }
+
+    public void toXMLElement(Document doc, Element parent) {
+
+        Element elm;
+        Text txt;
+        Element root;
+
+        root = doc.createElement("task");
+
+        elm = doc.createElement("name");
+        txt = doc.createTextNode(getName());
+        elm.appendChild(txt);
+        root.appendChild(elm);
+
+        elm = doc.createElement("detail");
+        txt = doc.createTextNode(getDetail());
+        elm.appendChild(txt);
+        root.appendChild(elm);
+
+        elm = doc.createElement("repeatCount");
+        txt = doc.createTextNode(String.valueOf(getRepeatCount()));
+        elm.appendChild(txt);
+        root.appendChild(elm);
+
+        elm = doc.createElement("repeatUnit");
+        txt = doc.createTextNode(getRepeatUnit().getName());
+        elm.appendChild(txt);
+        root.appendChild(elm);
+
+        elm = doc.createElement("repeat");
+        txt = doc.createTextNode(String.valueOf(isRepeatFlag()));
+        elm.appendChild(txt);
+        root.appendChild(elm);
+
+        elm = doc.createElement("lastDate");
+        txt = doc.createTextNode(Utilities.dateToStr(getLastDate()));
+        elm.appendChild(txt);
+        root.appendChild(elm);
+
+        parent.appendChild(root);
+    }
+
+
 
 }

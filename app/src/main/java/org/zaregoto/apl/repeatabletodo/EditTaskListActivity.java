@@ -10,9 +10,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import org.xmlpull.v1.XmlPullParserException;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.ui.EditTaskDialogFragment;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 
 public class EditTaskListActivity extends Activity implements EditTaskDialogFragment.EditTaskCallback {
 
@@ -90,6 +95,25 @@ public class EditTaskListActivity extends Activity implements EditTaskDialogFrag
 
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+
+    private void saveToFile(TaskList tasklist) {
+        try {
+            //TaskList.writeTaskListToFile(this, "/mnt/sdcard/test.xml", tasklist);
+            TaskList.writeTaskListToFile(this, tasklist);
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void addTask(Task task) {
 
         TaskList tasklist = ((MainApplication)getApplication()).getTaskList();
@@ -99,14 +123,21 @@ public class EditTaskListActivity extends Activity implements EditTaskDialogFrag
             adapter.notifyDataSetChanged();
         }
 
+        // auto save xmlfile
+        saveToFile(tasklist);
     }
 
     @Override
     public void editTask(Task task) {
 
+        TaskList tasklist = ((MainApplication)getApplication()).getTaskList();
+        tasklist.addTask(task);
+
         if (null != adapter) {
             adapter.notifyDataSetChanged();
         }
 
+        // auto save xmlfile
+        saveToFile(tasklist);
     }
 }

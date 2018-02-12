@@ -1,14 +1,23 @@
 package org.zaregoto.apl.repeatabletodo.model;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Xml;
+import org.w3c.dom.*;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.zaregoto.apl.repeatabletodo.util.Utilities;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +33,9 @@ public class TaskList {
     private ArrayList<Task> tasks;
 
     public static final String DEFAULT_TASKLIST_FILENAME = "tasklist.xml";
+
+    public static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"utf-8\">";
+    public static final String XML_ELEMENT_NAME = "tasklist";
 
     private TaskList() {
         tasks = new ArrayList<>();
@@ -49,6 +61,41 @@ public class TaskList {
     public ArrayList<Task> getTasks() {
         return tasks;
     }
+
+
+    // TODO: このあたり, XMLSerializable 的な abstract 作って親子関係でぶんまわして XML Object 入れ子取得して書き出しにする
+    public String toXMLString() throws ParserConfigurationException, TransformerException {
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = dbf.newDocumentBuilder();
+        Document doc = builder.newDocument();
+
+        Element elm = doc.createElement(XML_ELEMENT_NAME);
+        Attr attr = doc.createAttribute("version");
+        attr.setValue("1.0");
+        elm.setAttributeNode(attr);
+
+        for (Task task: tasks) {
+            task.toXMLElement(doc, elm);
+        }
+
+        doc.appendChild(elm);
+
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        //transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount","2");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        StringWriter writer = new StringWriter();
+        transformer.transform(new DOMSource(doc), new StreamResult(writer));
+        String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
+
+        return output;
+    }
+
+
 
 
     public ArrayList<Todo> generateTodoList() {
@@ -92,6 +139,16 @@ public class TaskList {
     }
 
 
+    public static void writeTaskListToFile(Context context, TaskList tasklist) throws ParserConfigurationException, IOException, TransformerException {
+
+        File dir = context.getFilesDir();
+        File absFile = new File(dir, DEFAULT_TASKLIST_FILENAME);
+
+        writeTaskListToFile(context, absFile.getAbsolutePath(), tasklist);
+    }
+
+
+
     // TODO: parser 部を 内部クラスか, 独立したクラスに分離する
     // TODO: parser 部の実装を再考する. (とりあえず状態マシンで XmlPullParser を, 構文解析器にしているがもっといい使い方できないのか?)
     // TODO: xml に何らかのかたちで schema 制約をかけられないか?
@@ -120,7 +177,6 @@ public class TaskList {
         Task.REPEAT_UNIT _repeatUnit = null;
         boolean _repeat = false;
         Date _lastDate = null;
-
 
         TASK_PARSER_STATUS parserStatus = IDLE;
 
@@ -210,5 +266,22 @@ public class TaskList {
 
         return taskList;
     }
+
+
+    public static void writeTaskListToFile(Context context, String _absfileName, TaskList tasklist) throws IOException, ParserConfigurationException, TransformerException {
+
+        File xmlFile = new File(_absfileName);
+        FileOutputStream fos = null;
+
+        if (!xmlFile.exists()) {
+            xmlFile.createNewFile();
+        }
+
+        fos = new FileOutputStream(xmlFile);
+        String xmlString = tasklist.toXMLString();
+
+        fos.write(xmlString.getBytes());
+    }
+
 
 }
