@@ -13,6 +13,7 @@ public class Task implements Serializable {
     private REPEAT_UNIT repeatUnit;
 
     private boolean repeatFlag;
+    private boolean enableTask;
 
     private Date lastDate;
 
@@ -50,6 +51,7 @@ public class Task implements Serializable {
         this.repeatCount = 1;
         this.repeatUnit = REPEAT_UNIT.DAILY;
         this.repeatFlag = true;
+        this.enableTask = true;
     }
 
     public Task(String _name, String _detail, int _count, REPEAT_UNIT _unit) {
@@ -57,6 +59,8 @@ public class Task implements Serializable {
         this.detail = _detail;
         this.repeatCount = _count;
         this.repeatUnit = _unit;
+        this.repeatFlag = true;
+        this.enableTask = true;
     }
 
     public String getName() {

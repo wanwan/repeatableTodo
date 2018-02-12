@@ -19,19 +19,27 @@ import java.util.IllegalFormatException;
 public class EditTaskDialogFragment extends DialogFragment {
 
     private static final String ARGS_TASK_ID = "task";
+    private static final String ARGS_MODE_ID = "mode";
+
+    public enum EDIT_TASK_DIALOG_MODE {
+        NEW_TASK,
+        EDIT_TASK,
+    }
 
     private Task task = null;
+    private EDIT_TASK_DIALOG_MODE mode = EDIT_TASK_DIALOG_MODE.NEW_TASK;
     private View dialogView = null;
     private RepeatUnitAdapter adapter = null;
 
     private EditTaskCallback callback = null;
 
-    public static EditTaskDialogFragment newInstance(Task _task) {
+    public static EditTaskDialogFragment newInstance(Task _task, EDIT_TASK_DIALOG_MODE _mode) {
         
         Bundle args = new Bundle();
         
         EditTaskDialogFragment fragment = new EditTaskDialogFragment();
         args.putSerializable(ARGS_TASK_ID, _task);
+        args.putSerializable(ARGS_MODE_ID, _mode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,6 +49,7 @@ public class EditTaskDialogFragment extends DialogFragment {
 
         if (null != getArguments()) {
             task = (Task) getArguments().getSerializable(ARGS_TASK_ID);
+            mode = (EDIT_TASK_DIALOG_MODE) getArguments().getSerializable(ARGS_MODE_ID);
         }
 
         // Use the Builder class for convenient dialog construction
@@ -60,7 +69,7 @@ public class EditTaskDialogFragment extends DialogFragment {
             name.setText(task.getName());
 
             EditText detail = dialogView.findViewById(R.id.detailEdit);
-            detail.setText(task.getName());
+            detail.setText(task.getDetail());
 
             EditText repeatUnitEdit = dialogView.findViewById(R.id.repeatCountEdit);
             repeatUnitEdit.setText(String.valueOf(task.getRepeatCount()));
@@ -97,8 +106,11 @@ public class EditTaskDialogFragment extends DialogFragment {
                 CheckBox repeatFlagCheck = dialogView.findViewById(R.id.repeatFlag);
                 task.setRepeatFlag(repeatFlagCheck.isChecked());
 
-                if (null != callback) {
+                if (null != callback && mode == EDIT_TASK_DIALOG_MODE.NEW_TASK) {
                     callback.addTask(task);
+                }
+                else if (null != callback && mode == EDIT_TASK_DIALOG_MODE.EDIT_TASK) {
+                    callback.editTask(task);
                 }
             }
         });
@@ -123,6 +135,7 @@ public class EditTaskDialogFragment extends DialogFragment {
 
     public interface EditTaskCallback {
         void addTask(Task task);
+        void editTask(Task task);
     }
 
 }

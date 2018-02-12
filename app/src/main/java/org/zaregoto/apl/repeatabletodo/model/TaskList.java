@@ -38,6 +38,10 @@ public class TaskList {
         tasks.add(_task);
     }
 
+    public void removeTask(Task _task) {
+        tasks.remove(_task);
+    }
+
     public String getId() {
         return id;
     }

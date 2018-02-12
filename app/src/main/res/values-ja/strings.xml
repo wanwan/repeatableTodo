@@ -6,6 +6,10 @@
     <string name="task_repeatflag_lbl">繰り返しフラグ</string>
     <string name="task_dialog_title">タスク入力</string>
     <string name="task_dialog_btn_ok">OK</string>
+    <string name="remove_task_dialog_title">Remove Confirm</string>
+    <string name="remove_task_dialog_message">Remove Task?</string>
+    <string name="remove_task_dialog_ok_btn">OK</string>
+    <string name="remove_task_dialog_cancel_btn">Cancel</string>
 
     <string-array name="repeatunit_type_array">
         <item>DAILY</item>
