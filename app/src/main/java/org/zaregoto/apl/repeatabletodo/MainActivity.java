@@ -14,15 +14,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
+import org.zaregoto.apl.repeatabletodo.model.Todo;
 import org.zaregoto.apl.repeatabletodo.util.Utilities;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
+    private ArrayList<Todo> mTodoList = null;
+    private TodoListAdapter mAdapter = null;
 
     private int RESULT_CODE_EDIT_TASKS = 1;
 
@@ -80,6 +89,14 @@ public class MainActivity extends AppCompatActivity
 
         TaskList tasklist = TaskList.readTaskListFromFile(this);
         ((MainApplication)getApplication()).setTaskList(tasklist);
+
+        ListView lv = findViewById(R.id.todoListView);
+        mTodoList = new ArrayList<>();
+        mAdapter = new TodoListAdapter(this, R.layout.adapter_todo_item, mTodoList);
+        if (null != lv) {
+            lv.setAdapter(mAdapter);
+        }
+
     }
 
     @Override
@@ -130,8 +147,13 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_test_make_todo) {
+            mTodoList.clear();
+            ArrayList<Todo> todolist = createTodoListFromTaskList();
+            mTodoList.addAll(todolist);
+            if (null != mAdapter) {
+                mAdapter.notifyDataSetChanged();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -139,5 +161,65 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    // TODO: これをどこにおくかは要検討
+    private ArrayList<Todo> createTodoListFromTaskList() {
+        Date today = new Date();
+        TaskList tasklist = ((MainApplication)getApplication()).getTaskList();
+        ArrayList<Todo> todolist = new ArrayList<>();
+
+        if (null != tasklist && tasklist.getTasks().size() > 0) {
+
+            Todo todo;
+            for (Task task : tasklist.getTasks()) {
+                if (isTaskOver(task, today)) {
+                    todo = createTodoFromTask(task, today);
+                    todolist.add(todo);
+                }
+            }
+        }
+
+        return todolist;
+    }
+
+    private Todo createTodoFromTask(Task task, Date today) {
+
+        Todo todo = new Todo(task, today);
+        return todo;
+    }
+
+    private boolean isTaskOver(Task task, Date today) {
+
+        boolean ret = false;
+        Calendar cLastday = new GregorianCalendar();
+        Calendar cToday = new GregorianCalendar();
+
+        if (null == task.getLastDate()) {
+            ret = true;
+        }
+        else {
+            if (task.isRepeatFlag()) {
+                cLastday.setTime(task.getLastDate());
+                switch (task.getRepeatUnit()) {
+                    case DAILY:
+                        cLastday.add(Calendar.DAY_OF_MONTH, task.getRepeatCount());
+                        break;
+                    case WEEKLY:
+                        cLastday.add(Calendar.DAY_OF_MONTH, task.getRepeatCount()*7);
+                        break;
+                    case MONTHLY:
+                        cLastday.add(Calendar.MONTH, task.getRepeatCount());
+                        break;
+                    default:
+                        break;
+                }
+
+                if (cToday.after(cLastday)) {
+                    ret = true;
+                }
+            }
+        }
+
+        return ret;
+    }
 
 }

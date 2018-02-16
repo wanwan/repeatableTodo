@@ -25,6 +25,13 @@ public class Todo {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
 }
 
 
