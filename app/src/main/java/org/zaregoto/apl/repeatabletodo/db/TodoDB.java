@@ -11,41 +11,36 @@ public class TodoDB {
 
     public static ArrayList<Todo> loadData(Context context) {
 
+        ArrayList<Todo> ret;
         TodoDBHelper dbhelper = null;
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
 
         try {
             dbhelper = new TodoDBHelper(context.getApplicationContext());
-            db = dbhelper.getReadableDatabase();
+            ret = dbhelper.queryTodoListToday();
 
-            cursor = db.query(TodoDBHelper.TODO_TABLE_NAME);
-
-
-        if (null != cursor) {
-            cursor.moveToFirst();
-            for (int i = 0; i < cursor.getCount(); i++) {
-
-                item = getItemFromCursor(context, cursor);
-
-                if (null != items) {
-                    items.add(item);
-                }
-                cursor.moveToNext();
+        } finally {
+            if (null != dbhelper) {
+                dbhelper.close();
             }
         }
-    } finally {
-        if (null != cursor) {
-            cursor.close();
-        }
-        if (null != db) {
-            db.close();
-        }
-        if (null != dbhelper) {
-            dbhelper.close();
-        }
+
+        return ret;
     }
 
 
+    public static void saveData(Context context, ArrayList<Todo> todolist) {
+
+        TodoDBHelper dbhelper = null;
+
+        try {
+            dbhelper = new TodoDBHelper(context.getApplicationContext());
+            dbhelper.upsertTodoListToday(todolist);
+
+        } finally {
+            if (null != dbhelper) {
+                dbhelper.close();
+            }
+        }
+    }
 
 }

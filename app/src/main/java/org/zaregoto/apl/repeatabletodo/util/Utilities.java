@@ -46,4 +46,5 @@ public class Utilities {
         Date date = sdf.parse(str);
         return date;
     }
+
 }

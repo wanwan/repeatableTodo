@@ -6,6 +6,8 @@ import android.util.Xml;
 import org.w3c.dom.*;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.zaregoto.apl.repeatabletodo.db.TaskDB;
+import org.zaregoto.apl.repeatabletodo.db.TodoDBHelper;
 import org.zaregoto.apl.repeatabletodo.util.Utilities;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -145,6 +147,9 @@ public class TaskList {
         File absFile = new File(dir, DEFAULT_TASKLIST_FILENAME);
 
         writeTaskListToFile(context, absFile.getAbsolutePath(), tasklist);
+
+        // TODO: ちょーざんてい. とりあえず DB で TODO -> TASK の参照を作るので, 暫定的にこのタイミングで DB にいれる.
+        TaskDB.saveData(context, tasklist.getTasks());
     }
 
 

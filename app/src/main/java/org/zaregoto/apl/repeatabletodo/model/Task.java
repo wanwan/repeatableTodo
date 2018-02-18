@@ -11,6 +11,7 @@ import java.util.Date;
 
 public class Task implements Serializable {
 
+    private int id;
     private String name;
     private String detail;
 
@@ -68,6 +69,10 @@ public class Task implements Serializable {
         this.enableTask = true;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -116,6 +121,9 @@ public class Task implements Serializable {
         this.lastDate = date;
     }
 
+    public boolean isEnableTask() {
+        return enableTask;
+    }
 
     boolean lastDatePlusRepeatCountIsOver(Date now) {
 
