@@ -1,8 +1,10 @@
 package org.zaregoto.apl.repeatabletodo.model;
 
+import android.content.Context;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+import org.zaregoto.apl.repeatabletodo.db.TaskDB;
 import org.zaregoto.apl.repeatabletodo.util.Utilities;
 
 import java.io.Serializable;
@@ -14,13 +16,10 @@ public class Task implements Serializable {
     private int id;
     private String name;
     private String detail;
-
     private int repeatCount;
     private REPEAT_UNIT repeatUnit;
-
     private boolean repeatFlag;
     private boolean enableTask;
-
     private Date lastDate;
 
 
@@ -51,23 +50,30 @@ public class Task implements Serializable {
         }
     }
 
-    public Task() {
-        this.name = "";
-        this.detail = "";
-        this.repeatCount = 1;
-        this.repeatUnit = REPEAT_UNIT.DAILY;
-        this.repeatFlag = true;
-        this.enableTask = true;
-    }
 
-    public Task(String _name, String _detail, int _count, REPEAT_UNIT _unit) {
+    // TODO: 最終的に id を DB から採番して取得するようにするので本コンストラクタは削除予定
+    public Task(String _name, String _detail, int _repeatCount, REPEAT_UNIT _repeatUnit, boolean _repeatFlag, boolean _enableTask, Date _lastDate) {
         this.name = _name;
         this.detail = _detail;
-        this.repeatCount = _count;
-        this.repeatUnit = _unit;
-        this.repeatFlag = true;
-        this.enableTask = true;
+        this.repeatCount = _repeatCount;
+        this.repeatUnit = _repeatUnit;
+        this.repeatFlag = _repeatFlag;
+        this.enableTask = _enableTask;
+        this.lastDate = _lastDate;
     }
+
+
+    public Task(int _id, String _name, String _detail, int _repeatCount, REPEAT_UNIT _repeatUnit, boolean _repeatFlag, boolean _enableTask, Date _lastDate) {
+        this.id = _id;
+        this.name = _name;
+        this.detail = _detail;
+        this.repeatCount = _repeatCount;
+        this.repeatUnit = _repeatUnit;
+        this.repeatFlag = _repeatFlag;
+        this.enableTask = _enableTask;
+        this.lastDate = _lastDate;
+    }
+
 
     public int getId() {
         return id;
@@ -169,6 +175,11 @@ public class Task implements Serializable {
 
         root = doc.createElement("task");
 
+        elm = doc.createElement("id");
+        txt = doc.createTextNode(String.valueOf(getId()));
+        elm.appendChild(txt);
+        root.appendChild(elm);
+
         elm = doc.createElement("name");
         txt = doc.createTextNode(getName());
         elm.appendChild(txt);
@@ -189,8 +200,13 @@ public class Task implements Serializable {
         elm.appendChild(txt);
         root.appendChild(elm);
 
-        elm = doc.createElement("repeat");
+        elm = doc.createElement("repeatFlag");
         txt = doc.createTextNode(String.valueOf(isRepeatFlag()));
+        elm.appendChild(txt);
+        root.appendChild(elm);
+
+        elm = doc.createElement("enableTask");
+        txt = doc.createTextNode(String.valueOf(isEnableTask()));
         elm.appendChild(txt);
         root.appendChild(elm);
 
@@ -200,6 +216,16 @@ public class Task implements Serializable {
         root.appendChild(elm);
 
         parent.appendChild(root);
+    }
+
+    public static Task generateTask(Context context, String name, String detail, int repeatCount, REPEAT_UNIT repeatUnit, boolean repeatFlag, boolean enableTask, Date lastDate) {
+
+        int id;
+        Task task;
+
+        id = TaskDB.insertNewTask(context, name, detail, repeatCount, repeatUnit, repeatFlag, lastDate, enableTask);
+        task = new Task(id, name, detail, repeatCount, repeatUnit, repeatFlag, enableTask, lastDate);
+        return task;
     }
 
 

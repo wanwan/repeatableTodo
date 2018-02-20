@@ -1,14 +1,11 @@
 package org.zaregoto.apl.repeatabletodo.model;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.util.Xml;
 import org.w3c.dom.*;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.zaregoto.apl.repeatabletodo.db.TaskDB;
-import org.zaregoto.apl.repeatabletodo.db.TodoDBHelper;
-import org.zaregoto.apl.repeatabletodo.util.Utilities;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -159,11 +156,13 @@ public class TaskList {
     // TODO: xml に何らかのかたちで schema 制約をかけられないか?
     enum TASK_PARSER_STATUS {
         IDLE,
+        TASK_ID,
         TASK_NAME,
         TASK_DETAIL,
         TASK_REPEAT_COUNT,
         TASK_REPEAT_UNIT,
-        TASK_REPEAT,
+        TASK_REPEAT_FLAG,
+        TASK_ENABLE_TASK,
         TASK_LASTDATE,
     }
 
@@ -176,11 +175,13 @@ public class TaskList {
         Task task = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
 
+        int _id = 0;
         String _name = null;
         String _detail = null;
         int _repeatCount = 0;
         Task.REPEAT_UNIT _repeatUnit = null;
-        boolean _repeat = false;
+        boolean _repeatFlag = false;
+        boolean _enableTask = false;
         Date _lastDate = null;
 
         TASK_PARSER_STATUS parserStatus = IDLE;
@@ -209,6 +210,9 @@ public class TaskList {
                     }
                     else if (xmlPullParser.getName().equals("task")) {
                     }
+                    else if (xmlPullParser.getName().equals("id")) {
+                        parserStatus = TASK_ID;
+                    }
                     else if (xmlPullParser.getName().equals("name")) {
                         parserStatus = TASK_NAME;
                     }
@@ -221,8 +225,11 @@ public class TaskList {
                     else if (xmlPullParser.getName().equals("repeatUnit")) {
                         parserStatus = TASK_REPEAT_UNIT;
                     }
-                    else if (xmlPullParser.getName().equals("repeat")) {
-                        parserStatus = TASK_REPEAT;
+                    else if (xmlPullParser.getName().equals("repeatFlag")) {
+                        parserStatus = TASK_REPEAT_FLAG;
+                    }
+                    else if (xmlPullParser.getName().equals("enableTask")) {
+                        parserStatus = TASK_ENABLE_TASK;
                     }
                     else if (xmlPullParser.getName().equals("lastDate")) {
                         parserStatus = TASK_LASTDATE;
@@ -233,12 +240,14 @@ public class TaskList {
                     if (xmlPullParser.getName().equals("tasklist")) {
                     }
                     else if (xmlPullParser.getName().equals("task")) {
-                        task = new Task(_name, _detail, _repeatCount, _repeatUnit);
+                        task = new Task(_id, _name, _detail, _repeatCount, _repeatUnit, _repeatFlag, _enableTask, _lastDate);
                         taskList.addTask(task);
                     }
                     break;
                 case XmlPullParser.TEXT:
                     switch (parserStatus) {
+                        case TASK_ID:
+                            _id = Integer.valueOf(xmlPullParser.getText());
                         case TASK_NAME:
                             _name = xmlPullParser.getText();
                             break;
@@ -252,8 +261,11 @@ public class TaskList {
                             String _unit = xmlPullParser.getText();
                             _repeatUnit = Task.REPEAT_UNIT.getUnitFromString(_unit);
                             break;
-                        case TASK_REPEAT:
-                            _repeat = Boolean.parseBoolean(xmlPullParser.getText());
+                        case TASK_REPEAT_FLAG:
+                            _repeatFlag = Boolean.parseBoolean(xmlPullParser.getText());
+                            break;
+                        case TASK_ENABLE_TASK:
+                            _enableTask = Boolean.parseBoolean(xmlPullParser.getText());
                             break;
                         case TASK_LASTDATE:
                             try {

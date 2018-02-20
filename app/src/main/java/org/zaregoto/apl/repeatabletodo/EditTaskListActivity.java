@@ -35,8 +35,7 @@ public class EditTaskListActivity extends Activity implements EditTaskDialogFrag
             @Override
             public void onClick(View view) {
                 //Toast.makeText(EditTaskListActivity.this, "add task", Toast.LENGTH_LONG).show();
-                Task task = new Task();
-                EditTaskDialogFragment dialog = EditTaskDialogFragment.newInstance(task, EditTaskDialogFragment.EDIT_TASK_DIALOG_MODE.NEW_TASK);
+                EditTaskDialogFragment dialog = EditTaskDialogFragment.newInstance(EditTaskDialogFragment.EDIT_TASK_DIALOG_MODE.NEW_TASK);
 
                 FragmentManager fm = getFragmentManager();
 

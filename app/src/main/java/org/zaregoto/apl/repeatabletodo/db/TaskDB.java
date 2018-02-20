@@ -2,9 +2,9 @@ package org.zaregoto.apl.repeatabletodo.db;
 
 import android.content.Context;
 import org.zaregoto.apl.repeatabletodo.model.Task;
-import org.zaregoto.apl.repeatabletodo.model.Todo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TaskDB {
 
@@ -26,6 +26,23 @@ public class TaskDB {
 //        return ret;
 //    }
 
+    public static int insertNewTask(Context context, String _name, String _detail, int _repeatCount, Task.REPEAT_UNIT _repeatUnit, boolean _repeatFlag, Date _lastDate, boolean _enableTask) {
+
+        TodoDBHelper dbhelper = null;
+        int id;
+
+        try {
+            dbhelper = new TodoDBHelper(context.getApplicationContext());
+            id = dbhelper.insertTaskListToday(_name, _detail, _repeatCount, _repeatUnit, _repeatFlag, _lastDate, _enableTask);
+
+        } finally {
+            if (null != dbhelper) {
+                dbhelper.close();
+            }
+        }
+
+        return id;
+    }
 
     public static void saveData(Context context, ArrayList<Task> tasklist) {
 
@@ -33,7 +50,7 @@ public class TaskDB {
 
         try {
             dbhelper = new TodoDBHelper(context.getApplicationContext());
-            dbhelper.upsertTaskListToday(tasklist);
+            dbhelper.insertTaskListToday(tasklist);
 
         } finally {
             if (null != dbhelper) {

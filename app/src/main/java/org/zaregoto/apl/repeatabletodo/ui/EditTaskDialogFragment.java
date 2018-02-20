@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import org.zaregoto.apl.repeatabletodo.R;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 
+import java.util.Date;
 import java.util.IllegalFormatException;
 
 public class EditTaskDialogFragment extends DialogFragment {
@@ -33,16 +34,28 @@ public class EditTaskDialogFragment extends DialogFragment {
 
     private EditTaskCallback callback = null;
 
-    public static EditTaskDialogFragment newInstance(Task _task, EDIT_TASK_DIALOG_MODE _mode) {
-        
+    public static EditTaskDialogFragment newInstance(EDIT_TASK_DIALOG_MODE _mode) {
+
         Bundle args = new Bundle();
-        
+
+        EditTaskDialogFragment fragment = new EditTaskDialogFragment();
+        args.putSerializable(ARGS_TASK_ID, null);
+        args.putSerializable(ARGS_MODE_ID, _mode);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static EditTaskDialogFragment newInstance(Task _task, EDIT_TASK_DIALOG_MODE _mode) {
+
+        Bundle args = new Bundle();
+
         EditTaskDialogFragment fragment = new EditTaskDialogFragment();
         args.putSerializable(ARGS_TASK_ID, _task);
         args.putSerializable(ARGS_MODE_ID, _mode);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -85,26 +98,38 @@ public class EditTaskDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
+                int _id;
+                String _name;
+                String _detail;
+                int _repeatCount;
+                Task.REPEAT_UNIT _repeatUnit;
+                boolean _repeatFlag;
+                boolean _enableTask;
+                Date _lastDate;
+
                 EditText name = dialogView.findViewById(R.id.nameEdit);
-                task.setName(name.getText().toString());
+                _name = name.getText().toString();
 
                 EditText detail = dialogView.findViewById(R.id.detailEdit);
-                task.setDetail(detail.getText().toString());
+                _detail = detail.getText().toString();
 
                 EditText repeatUnitEdit = dialogView.findViewById(R.id.repeatCountEdit);
-                int repeatCount;
                 try {
-                    repeatCount = Integer.parseInt(repeatUnitEdit.getText().toString());
+                    _repeatCount = Integer.parseInt(repeatUnitEdit.getText().toString());
                 } catch (IllegalFormatException e) {
-                    repeatCount = 0;
+                    _repeatCount = 0;
                 }
-                task.setRepeatCount(repeatCount);
 
                 Spinner repeatUnitSpinner = dialogView.findViewById(R.id.repeatUnitSpinner);
-                task.setRepeatUnit(Task.REPEAT_UNIT.getUnitFromString(repeatUnitSpinner.getSelectedItem().toString()));
+                _repeatUnit = Task.REPEAT_UNIT.getUnitFromString(repeatUnitSpinner.getSelectedItem().toString());
 
                 CheckBox repeatFlagCheck = dialogView.findViewById(R.id.repeatFlag);
-                task.setRepeatFlag(repeatFlagCheck.isChecked());
+                _repeatFlag = repeatFlagCheck.isChecked();
+
+                _enableTask = true;
+                _lastDate = new Date();
+
+                task = Task.generateTask(getActivity(), _name, _detail, _repeatCount, _repeatUnit, _repeatFlag, _enableTask, _lastDate);
 
                 if (null != callback && mode == EDIT_TASK_DIALOG_MODE.NEW_TASK) {
                     callback.addTask(task);

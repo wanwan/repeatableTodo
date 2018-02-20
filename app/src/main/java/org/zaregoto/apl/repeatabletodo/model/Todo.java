@@ -25,12 +25,12 @@ public class Todo {
         }
     }
 
-    public Todo(String name, String detail, Date date, boolean done) {
-        this.name = name;
-        this.detail = detail;
-        this.date = date;
-        this.done = done;
-    }
+//    public Todo(String name, String detail, Date date, boolean done) {
+//        this.name = name;
+//        this.detail = detail;
+//        this.date = date;
+//        this.done = done;
+//    }
 
     public String getName() {
         return name;

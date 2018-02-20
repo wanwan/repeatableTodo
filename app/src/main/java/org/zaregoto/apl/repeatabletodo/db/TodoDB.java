@@ -1,8 +1,6 @@
 package org.zaregoto.apl.repeatabletodo.db;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
 
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class TodoDB {
 
         try {
             dbhelper = new TodoDBHelper(context.getApplicationContext());
-            dbhelper.upsertTodoListToday(todolist);
+            dbhelper.insertTodoListToday(todolist);
 
         } finally {
             if (null != dbhelper) {
