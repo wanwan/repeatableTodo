@@ -218,10 +218,13 @@ public class TodoDBHelper extends SQLiteOpenHelper {
             args1[6] = String.valueOf(booleanToDBInt(_enableTask));
             db.execSQL(INSERT_TASK_TABLE_BY_DAY, args1);
 
-//            String[] args2 = new String[1];
-//            args2[0] = TASK_TABLE_NAME;
-//            Cursor c = db.rawQuery(QUERY_SEQ_NO, args2);
-//            ret = c.getInt(c.getColumnIndex("seq"));
+            String[] args2 = new String[1];
+            args2[0] = TASK_TABLE_NAME;
+            Cursor c = db.rawQuery(QUERY_SEQ_NO, args2);
+            if (null != c && c.getCount() > 0) {
+                c.moveToFirst();
+                ret = c.getInt(c.getColumnIndex("seq"));
+            }
 
             db.setTransactionSuccessful();
         }
