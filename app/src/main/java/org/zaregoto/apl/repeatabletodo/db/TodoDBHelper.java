@@ -49,9 +49,14 @@ public class TodoDBHelper extends SQLiteOpenHelper {
 
     private static final String QUERY_SEQ_NO = "select seq from sqlite_sequence where name = ?";
 
-    private static final String INSERT_TASK_TABLE_BY_DAY
+    private static final String INSERT_TASK_TABLE
             = "insert into " + TASK_TABLE_NAME + "(task_name, task_detail, task_repeat_count, task_repeat_unit, task_repeat_flag, task_last_date, task_enable) " +
             " values (?, ?, ?, ?, ?, ?, ?);" ;
+    private static final String UPDATE_TASK_TABLE
+            = "update " + TASK_TABLE_NAME + " set task_name=?, task_detail=?, task_repeat_count=?, task_repeat_unit=?, task_repeat_flag=?, task_last_date=?, task_enable=? " +
+            " where id=?;" ;
+
+
 
     private static final String QUERY_TODO_TABLE_BY_DAY
             = "select " +
@@ -162,45 +167,44 @@ public class TodoDBHelper extends SQLiteOpenHelper {
     }
 
 
-    // TODO: task の初回作成時に id が無い場合と二回目以降の有る場合の相違をどうとりあつかうか?
-    public void insertTaskListToday(ArrayList<Task> tasklist) {
-
-        Iterator<Task> it;
-        Task task;
-        SQLiteDatabase db = null;
-        String[] args = new String[7];
-
-        if (null != tasklist) {
-
-            try {
-                it = tasklist.iterator();
-                db = getWritableDatabase();
-
-                while (it.hasNext()) {
-
-                    task = it.next();
-                    args[0] = task.getName();
-                    args[1] = task.getDetail();
-                    args[2] = String.valueOf(task.getRepeatCount());
-                    args[3] = task.getRepeatUnit().getName();
-                    args[4] = String.valueOf(booleanToDBInt(task.isRepeatFlag()));
-                    args[5] = dateToDBStr(task.getLastDate());
-                    args[6] = String.valueOf(booleanToDBInt(task.isEnableTask()));
-                    db.execSQL(INSERT_TASK_TABLE_BY_DAY, args);
-                }
-            }
-            finally {
-                if (null != db && db.isOpen()) {
-                    db.close();
-                }
-            }
-        }
-    }
+//    // TODO: task の初回作成時に id が無い場合と二回目以降の有る場合の相違をどうとりあつかうか?
+//    public void insertTaskListToday(ArrayList<Task> tasklist) {
+//
+//        Iterator<Task> it;
+//        Task task;
+//        SQLiteDatabase db = null;
+//        String[] args = new String[7];
+//
+//        if (null != tasklist) {
+//
+//            try {
+//                it = tasklist.iterator();
+//                db = getWritableDatabase();
+//
+//                while (it.hasNext()) {
+//
+//                    task = it.next();
+//                    args[0] = task.getName();
+//                    args[1] = task.getDetail();
+//                    args[2] = String.valueOf(task.getRepeatCount());
+//                    args[3] = task.getRepeatUnit().getName();
+//                    args[4] = String.valueOf(booleanToDBInt(task.isRepeatFlag()));
+//                    args[5] = dateToDBStr(task.getLastDate());
+//                    args[6] = String.valueOf(booleanToDBInt(task.isEnableTask()));
+//                    db.execSQL(INSERT_TASK_TABLE_BY_DAY, args);
+//                }
+//            }
+//            finally {
+//                if (null != db && db.isOpen()) {
+//                    db.close();
+//                }
+//            }
+//        }
+//    }
 
 
     public int insertTaskListToday(String _name, String _detail, int _repeatCount, Task.REPEAT_UNIT _repeatUnit, boolean _repeatFlag, Date _lastDate, boolean _enableTask) {
 
-        Iterator<Task> it;
         SQLiteDatabase db = null;
         int ret = -1;
 
@@ -216,7 +220,7 @@ public class TodoDBHelper extends SQLiteOpenHelper {
             args1[4] = String.valueOf(booleanToDBInt(_repeatFlag));
             args1[5] = dateToDBStr(_lastDate);
             args1[6] = String.valueOf(booleanToDBInt(_enableTask));
-            db.execSQL(INSERT_TASK_TABLE_BY_DAY, args1);
+            db.execSQL(INSERT_TASK_TABLE, args1);
 
             String[] args2 = new String[1];
             args2[0] = TASK_TABLE_NAME;
@@ -238,6 +242,38 @@ public class TodoDBHelper extends SQLiteOpenHelper {
         return ret;
     }
 
+
+    public int updateTaskListToday(Task task) {
+
+        SQLiteDatabase db = null;
+        int ret = -1;
+
+        try {
+            db = getWritableDatabase();
+            db.beginTransaction();
+
+            String[] args1 = new String[8];
+            args1[0] = task.getName();
+            args1[1] = task.getDetail();
+            args1[2] = String.valueOf(task.getRepeatCount());
+            args1[3] = task.getRepeatUnit().getName();
+            args1[4] = String.valueOf(booleanToDBInt(task.isRepeatFlag()));
+            args1[5] = dateToDBStr(task.getLastDate());
+            args1[6] = String.valueOf(booleanToDBInt(task.isEnableTask()));
+            args1[7] = String.valueOf(task.getId());
+            db.execSQL(UPDATE_TASK_TABLE, args1);
+
+            db.setTransactionSuccessful();
+        }
+        finally {
+            db.endTransaction();
+            if (null != db && db.isOpen()) {
+                db.close();
+            }
+        }
+
+        return ret;
+    }
 
 
 
