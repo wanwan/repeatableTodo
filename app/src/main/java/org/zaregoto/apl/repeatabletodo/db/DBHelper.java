@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
-public class TodoDBHelper extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB = "todo";
     private static final int DB_VERSION = 1;
@@ -71,7 +71,7 @@ public class TodoDBHelper extends SQLiteOpenHelper {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
 
-    public TodoDBHelper(Context applicationContext) {
+    public DBHelper(Context applicationContext) {
         super(applicationContext, DB, null, DB_VERSION);
     }
 
@@ -168,7 +168,7 @@ public class TodoDBHelper extends SQLiteOpenHelper {
 
 
 //    // TODO: task の初回作成時に id が無い場合と二回目以降の有る場合の相違をどうとりあつかうか?
-//    public void insertTaskListToday(ArrayList<Task> tasklist) {
+//    public void insertTask(ArrayList<Task> tasklist) {
 //
 //        Iterator<Task> it;
 //        Task task;
@@ -203,7 +203,7 @@ public class TodoDBHelper extends SQLiteOpenHelper {
 //    }
 
 
-    public int insertTaskListToday(String _name, String _detail, int _repeatCount, Task.REPEAT_UNIT _repeatUnit, boolean _repeatFlag, Date _lastDate, boolean _enableTask) {
+    public int insertTask(String _name, String _detail, int _repeatCount, Task.REPEAT_UNIT _repeatUnit, boolean _repeatFlag, Date _lastDate, boolean _enableTask) {
 
         SQLiteDatabase db = null;
         int ret = -1;
@@ -243,7 +243,7 @@ public class TodoDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public int updateTaskListToday(Task task) {
+    public int updateTask(Task task) {
 
         SQLiteDatabase db = null;
         int ret = -1;

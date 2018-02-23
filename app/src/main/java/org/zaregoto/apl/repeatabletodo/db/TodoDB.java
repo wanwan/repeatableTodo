@@ -10,10 +10,10 @@ public class TodoDB {
     public static ArrayList<Todo> loadData(Context context) {
 
         ArrayList<Todo> ret;
-        TodoDBHelper dbhelper = null;
+        DBHelper dbhelper = null;
 
         try {
-            dbhelper = new TodoDBHelper(context.getApplicationContext());
+            dbhelper = new DBHelper(context.getApplicationContext());
             ret = dbhelper.queryTodoListToday();
 
         } finally {
@@ -28,10 +28,10 @@ public class TodoDB {
 
     public static void saveData(Context context, ArrayList<Todo> todolist) {
 
-        TodoDBHelper dbhelper = null;
+        DBHelper dbhelper = null;
 
         try {
-            dbhelper = new TodoDBHelper(context.getApplicationContext());
+            dbhelper = new DBHelper(context.getApplicationContext());
             dbhelper.insertTodoListToday(todolist);
 
         } finally {
