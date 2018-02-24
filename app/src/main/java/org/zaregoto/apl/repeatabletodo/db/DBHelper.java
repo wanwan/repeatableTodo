@@ -167,42 +167,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-//    // TODO: task の初回作成時に id が無い場合と二回目以降の有る場合の相違をどうとりあつかうか?
-//    public void insertTask(ArrayList<Task> tasklist) {
-//
-//        Iterator<Task> it;
-//        Task task;
-//        SQLiteDatabase db = null;
-//        String[] args = new String[7];
-//
-//        if (null != tasklist) {
-//
-//            try {
-//                it = tasklist.iterator();
-//                db = getWritableDatabase();
-//
-//                while (it.hasNext()) {
-//
-//                    task = it.next();
-//                    args[0] = task.getName();
-//                    args[1] = task.getDetail();
-//                    args[2] = String.valueOf(task.getRepeatCount());
-//                    args[3] = task.getRepeatUnit().getName();
-//                    args[4] = String.valueOf(booleanToDBInt(task.isRepeatFlag()));
-//                    args[5] = dateToDBStr(task.getLastDate());
-//                    args[6] = String.valueOf(booleanToDBInt(task.isEnableTask()));
-//                    db.execSQL(INSERT_TASK_TABLE_BY_DAY, args);
-//                }
-//            }
-//            finally {
-//                if (null != db && db.isOpen()) {
-//                    db.close();
-//                }
-//            }
-//        }
-//    }
-
-
     public int insertTask(String _name, String _detail, int _repeatCount, Task.REPEAT_UNIT _repeatUnit, boolean _repeatFlag, Date _lastDate, boolean _enableTask) {
 
         SQLiteDatabase db = null;

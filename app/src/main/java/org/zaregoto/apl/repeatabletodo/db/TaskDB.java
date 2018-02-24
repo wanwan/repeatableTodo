@@ -7,24 +7,6 @@ import java.util.Date;
 
 public class TaskDB {
 
-//    public static ArrayList<Todo> loadData(Context context) {
-//
-//        ArrayList<Todo> ret;
-//        TodoDBHelper dbhelper = null;
-//
-//        try {
-//            dbhelper = new TodoDBHelper(context.getApplicationContext());
-//            ret = dbhelper.queryTodoListToday();
-//
-//        } finally {
-//            if (null != dbhelper) {
-//                dbhelper.close();
-//            }
-//        }
-//
-//        return ret;
-//    }
-
     public static int insertNewTask(Context context, String _name, String _detail, int _repeatCount, Task.REPEAT_UNIT _repeatUnit, boolean _repeatFlag, Date _lastDate, boolean _enableTask) {
 
         DBHelper dbhelper = null;
@@ -58,21 +40,4 @@ public class TaskDB {
             }
         }
     }
-
-
-//    public static void saveData(Context context, ArrayList<Task> tasklist) {
-//
-//        DBHelper dbhelper = null;
-//
-//        try {
-//            dbhelper = new DBHelper(context.getApplicationContext());
-//            dbhelper.insertTask(tasklist);
-//
-//        } finally {
-//            if (null != dbhelper) {
-//                dbhelper.close();
-//            }
-//        }
-//    }
-
 }

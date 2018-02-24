@@ -144,9 +144,6 @@ public class TaskList {
         File absFile = new File(dir, DEFAULT_TASKLIST_FILENAME);
 
         writeTaskListToFile(context, absFile.getAbsolutePath(), tasklist);
-
-        // TODO: ちょーざんてい. とりあえず DB で TODO -> TASK の参照を作るので, 暫定的にこのタイミングで DB にいれる.
-        TaskDB.saveData(context, tasklist.getTasks());
     }
 
 
