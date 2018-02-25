@@ -116,7 +116,7 @@ public class EditTaskDialogFragment extends DialogFragment {
                 EditText repeatUnitEdit = dialogView.findViewById(R.id.repeatCountEdit);
                 try {
                     _repeatCount = Integer.parseInt(repeatUnitEdit.getText().toString());
-                } catch (IllegalFormatException e) {
+                } catch (NumberFormatException | IllegalFormatException e) {
                     _repeatCount = 0;
                 }
 
