@@ -98,7 +98,6 @@ public class EditTaskDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                int _id;
                 String _name;
                 String _detail;
                 int _repeatCount;
@@ -130,12 +129,24 @@ public class EditTaskDialogFragment extends DialogFragment {
                 _lastDate = new Date();
 
                 task = Task.generateTask(getActivity(), _name, _detail, _repeatCount, _repeatUnit, _repeatFlag, _enableTask, _lastDate);
-
-                if (null != callback && mode == EDIT_TASK_DIALOG_MODE.NEW_TASK) {
-                    callback.addTask(task);
+                if (null != task) {
+                    if (null != callback && mode == EDIT_TASK_DIALOG_MODE.NEW_TASK) {
+                        callback.addTask(task);
+                    } else if (null != callback && mode == EDIT_TASK_DIALOG_MODE.EDIT_TASK) {
+                        callback.editTask(task);
+                    }
                 }
-                else if (null != callback && mode == EDIT_TASK_DIALOG_MODE.EDIT_TASK) {
-                    callback.editTask(task);
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    AlertDialog dialog = builder.setTitle(R.string.task_illegaldialog_title)
+                            .setMessage(R.string.task_illegaldialog_msg)
+                            .setPositiveButton(R.string.task_illegaldialog_ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            }).create();
+                    dialog.show();
                 }
             }
         });

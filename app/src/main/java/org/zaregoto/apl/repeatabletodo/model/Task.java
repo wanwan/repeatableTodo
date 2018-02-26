@@ -223,6 +223,11 @@ public class Task implements Serializable {
         int id;
         Task task;
 
+        // check values
+        if (name.trim().length() == 0) {
+            return null;
+        }
+
         id = TaskDB.insertNewTask(context, name, detail, repeatCount, repeatUnit, repeatFlag, lastDate, enableTask);
         task = new Task(id, name, detail, repeatCount, repeatUnit, repeatFlag, enableTask, lastDate);
         return task;

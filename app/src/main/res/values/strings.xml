@@ -15,6 +15,9 @@
     <string name="remove_task_dialog_message">Remove Task?</string>
     <string name="remove_task_dialog_ok_btn">OK</string>
     <string name="remove_task_dialog_cancel_btn">Cancel</string>
+    <string name="task_illegaldialog_title">Dialog</string>
+    <string name="task_illegaldialog_msg">task attribute is not correct</string>
+    <string name="task_illegaldialog_ok">OK</string>
 
     <string-array name="repeatunit_type_array">
         <item>DAILY</item>
