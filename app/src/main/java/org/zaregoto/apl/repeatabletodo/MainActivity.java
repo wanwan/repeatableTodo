@@ -10,6 +10,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -90,11 +92,17 @@ public class MainActivity extends AppCompatActivity
         TaskList tasklist = TaskList.readTaskListFromFile(this);
         ((MainApplication)getApplication()).setTaskList(tasklist);
 
-        ListView lv = findViewById(R.id.todoListView);
+        RecyclerView rv = findViewById(R.id.todoListView);
+
+        rv.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(llm);
+
         mTodoList = new ArrayList<>();
-        mAdapter = new TodoListAdapter(this, R.layout.adapter_todo_item, mTodoList);
-        if (null != lv) {
-            lv.setAdapter(mAdapter);
+        mAdapter = new TodoListAdapter(mTodoList);
+        if (null != rv) {
+            rv.setAdapter(mAdapter);
         }
 
     }

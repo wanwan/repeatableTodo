@@ -1,48 +1,55 @@
 package org.zaregoto.apl.repeatabletodo;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
 
 import java.util.List;
 
-public class TodoListAdapter extends ArrayAdapter<Todo> {
+public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ContactViewHolder> {
 
     private LayoutInflater mInflater;
+    private List<Todo> contactList;
 
-    public TodoListAdapter(Context context, int resource, List<Todo> objects) {
-        super(context, resource, objects);
-        mInflater = LayoutInflater.from(context);
+    public TodoListAdapter(List<Todo> contactList) {
+        this.contactList = contactList;
+    }
+
+    @Override
+    public int getItemCount() {
+        return contactList.size();
+    }
+
+    @Override
+    public void onBindViewHolder(TodoListAdapter.ContactViewHolder contactViewHolder, int i) {
+        Todo todo = contactList.get(i);
+        contactViewHolder.todoName.setText(todo.getName());
+        contactViewHolder.todoDetail.setText(todo.getDetail());
+    }
+
+    @Override
+    public TodoListAdapter.ContactViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View itemView = LayoutInflater.
+                from(viewGroup.getContext()).
+                inflate(R.layout.adapter_todo_item, viewGroup, false);
+
+        return new TodoListAdapter.ContactViewHolder(itemView);
     }
 
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public class ContactViewHolder extends RecyclerView.ViewHolder {
+        TextView todoName;
+        TextView todoDetail;
 
-        Todo todo;
-        TextView tv;
-
-        if (null == convertView) {
-            convertView = mInflater.inflate(R.layout.adapter_todo_item, parent, false);
+        public ContactViewHolder(View v) {
+            super(v);
+            todoName =  (TextView) v.findViewById(R.id.todoname);
+            todoDetail = (TextView)  v.findViewById(R.id.tododetail);
         }
-
-        todo = getItem(position);
-        if (null != todo) {
-            tv = convertView.findViewById(R.id.todoname);
-            if (null != tv) {
-                tv.setText(todo.getName());
-            }
-            tv = convertView.findViewById(R.id.tododetail);
-            if (null != tv) {
-                tv.setText(todo.getDetail());
-            }
-        }
-
-        return convertView;
     }
 }
