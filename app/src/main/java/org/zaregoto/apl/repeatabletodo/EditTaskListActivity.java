@@ -54,7 +54,7 @@ public class EditTaskListActivity extends Activity implements EditTaskDialogFrag
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(llm);
 
-        adapter = new TaskListAdapter(tasklist.getTasks());
+        adapter = new TaskListAdapter(this, tasklist.getTasks());
         if (null != rv) {
             rv.setAdapter(adapter);
 //            rv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
