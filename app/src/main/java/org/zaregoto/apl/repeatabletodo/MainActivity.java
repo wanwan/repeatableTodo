@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MainActivity";
     private ArrayList<Todo> mTodoList = null;
     private TodoListAdapter mAdapter = null;
+    private RecyclerView mRecyclerView = null;
 
     private int RESULT_CODE_EDIT_TASKS = 1;
 
@@ -92,20 +94,40 @@ public class MainActivity extends AppCompatActivity
         TaskList tasklist = TaskList.readTaskListFromFile(this);
         ((MainApplication)getApplication()).setTaskList(tasklist);
 
-        RecyclerView rv = findViewById(R.id.todoListView);
+        mRecyclerView = findViewById(R.id.todoListView);
 
-        rv.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rv.setLayoutManager(llm);
+        mRecyclerView.setLayoutManager(llm);
 
         mTodoList = new ArrayList<>();
         mAdapter = new TodoListAdapter(mTodoList);
-        if (null != rv) {
-            rv.setAdapter(mAdapter);
+        if (null != mRecyclerView) {
+            mRecyclerView.setAdapter(mAdapter);
+
+            (new ItemTouchHelper(callback)).attachToRecyclerView(mRecyclerView);
         }
 
     }
+
+
+    ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            // 横にスワイプされたら要素を消す
+            int swipedPosition = viewHolder.getAdapterPosition();
+            TodoListAdapter adapter = (TodoListAdapter) mRecyclerView.getAdapter();
+            mAdapter.remove(swipedPosition);
+        }
+    };
+
 
     @Override
     public void onBackPressed() {

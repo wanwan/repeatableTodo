@@ -42,6 +42,12 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.Contac
     }
 
 
+    public void remove(int position) {
+        contactList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
     public class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView todoName;
         TextView todoDetail;
