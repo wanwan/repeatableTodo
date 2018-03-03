@@ -36,7 +36,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Contac
 
     @Override
     public void onBindViewHolder(ContactViewHolder contactViewHolder, int i) {
-        Task task = contactList.get(i);
+        final Task task = contactList.get(i);
         contactViewHolder.taskName.setText(task.getName());
         contactViewHolder.taskDetail.setText(task.getDetail());
         contactViewHolder.root.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +44,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Contac
             public void onClick(View view) {
                 Log.d(TAG, "***** onBindViewHolder:onClickListener *****");
 
-                EditTaskDialogFragment dialog = EditTaskDialogFragment.newInstance(EditTaskDialogFragment.EDIT_TASK_DIALOG_MODE.NEW_TASK);
+                EditTaskDialogFragment dialog = EditTaskDialogFragment.newInstance(task, EditTaskDialogFragment.EDIT_TASK_DIALOG_MODE.EDIT_TASK);
 
                 FragmentManager fm = ((Activity)mContext).getFragmentManager();
 
