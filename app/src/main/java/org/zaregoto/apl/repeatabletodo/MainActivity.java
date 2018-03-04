@@ -46,18 +46,18 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-                Intent intent = new Intent(MainActivity.this, EditTaskListActivity.class);
-                startActivityForResult(intent, RESULT_CODE_EDIT_TASKS);
-
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//
+//                Intent intent = new Intent(MainActivity.this, EditTaskListActivity.class);
+//                startActivityForResult(intent, RESULT_CODE_EDIT_TASKS);
+//
+//            }
+//        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -174,6 +174,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
+
+            Intent intent = new Intent(MainActivity.this, EditTaskListActivity.class);
+            startActivityForResult(intent, RESULT_CODE_EDIT_TASKS);
 
         } else if (id == R.id.nav_share) {
 
