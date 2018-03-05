@@ -3,9 +3,7 @@ package org.zaregoto.apl.repeatabletodo;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,8 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
@@ -178,7 +174,10 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, EditTaskListActivity.class);
             startActivityForResult(intent, RESULT_CODE_EDIT_TASKS);
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_configuration) {
+
+            Intent intent = new Intent(MainActivity.this, ConfigurationActivity.class);
+            startActivityForResult(intent, RESULT_CODE_EDIT_TASKS);
 
         } else if (id == R.id.nav_test_make_todo) {
             mTodoList.clear();
