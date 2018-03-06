@@ -15,6 +15,7 @@
     <string name="task_illegaldialog_ok">OK</string>
     <string name="menu_edit_task">Edit Task List</string>
     <string name="menu_configuration">Configuration</string>
+    <string name="menu_group_configuration">Configuration</string>
 
     <string-array name="repeatunit_type_array">
         <item>DAILY</item>
