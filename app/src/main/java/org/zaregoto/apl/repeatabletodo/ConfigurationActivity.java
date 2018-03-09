@@ -26,7 +26,8 @@ public class ConfigurationActivity extends Activity {
                             ConfigurationActivity.this,
                             new TimePickerDialog.OnTimeSetListener() {
                                 @Override
-                                public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                                public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+
                                 }
                             },
                             0,

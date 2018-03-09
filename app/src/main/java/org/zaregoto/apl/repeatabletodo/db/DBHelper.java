@@ -21,11 +21,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     static String TODO_TABLE_NAME = "todolist";
     static String TASK_TABLE_NAME = "tasklist";
+    static String CONFIGURATION_TABLE_NAME = "configuration";
 
     private static final String ENABLE_FOREGN_KEY_CONSTRAINT = "PRAGMA foreign_keys=ON;";
 
-    private static final String CREATE_TASK_TABLE
-            = "create table " + TASK_TABLE_NAME + " (" +
+    private static final String CREATE_TASK_TABLE =
+            "create table " + TASK_TABLE_NAME + " (" +
             "task_id integer primary key autoincrement, " +
             "task_name string not null," +
             "task_detail string," +
@@ -36,8 +37,8 @@ public class DBHelper extends SQLiteOpenHelper {
             "task_enable BOOLEAN not null" +
             ");";
 
-    private static final String CREATE_TODO_TABLE
-            = "create table " + TODO_TABLE_NAME + " (" +
+    private static final String CREATE_TODO_TABLE =
+            "create table " + TODO_TABLE_NAME + " (" +
             "task_id integer, " +
             "todo_date string not null check (todo_date like '____-__-__')," +
             "todo_name string not null," +
@@ -45,6 +46,12 @@ public class DBHelper extends SQLiteOpenHelper {
             "todo_done BOOLEAN," +
             "primary key (task_id, todo_date), " +
             "foreign key (task_id) references tasklist(task_id) " +
+            ");";
+
+    private static final String CREATE_CONFIGURATION_TABLE =
+            "create table" + CONFIGURATION_TABLE_NAME + " (" +
+            " update_time string check (__:__), " +
+            " todo_cron_flag BOOLEAN " +
             ");";
 
     private static final String QUERY_SEQ_NO = "select seq from sqlite_sequence where name = ?";
@@ -68,6 +75,10 @@ public class DBHelper extends SQLiteOpenHelper {
             = "replace into " + TODO_TABLE_NAME + "(todo_date, todo_name, todo_detail, todo_done) " +
             " values (?, ?, ?, ?);" ;
 
+
+    private static final String QUERY_CONFIGURATION = "";
+
+
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
 
@@ -79,6 +90,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL(ENABLE_FOREGN_KEY_CONSTRAINT);
+
+        db.execSQL(CREATE_CONFIGURATION_TABLE);
 
         db.execSQL(CREATE_TASK_TABLE);
         db.execSQL(CREATE_TODO_TABLE);
@@ -316,4 +329,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return date;
     }
 
+    public int updateUpdateTime(int hourOfDay, int minute) {
+        return 0;
+    }
+
+    public void updateTodoCronFlag(boolean flag) {
+
+    }
 }
