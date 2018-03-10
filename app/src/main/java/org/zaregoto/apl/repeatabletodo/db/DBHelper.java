@@ -19,6 +19,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DB = "todo";
     private static final int DB_VERSION = 1;
 
+    private static final int DEFAULT_CONFIGURATION_UPDATE_HOUR = 23;
+    private static final int DEFAULT_CONFIGURATION_UPDATE_MIN = 0;
+    private static final boolean DEFAULT_CONFIGURATION_UPDATE_FLAG = true;
+
     static String TODO_TABLE_NAME = "todolist";
     static String TASK_TABLE_NAME = "tasklist";
     static String CONFIGURATION_TABLE_NAME = "configuration";
@@ -76,8 +80,12 @@ public class DBHelper extends SQLiteOpenHelper {
             " values (?, ?, ?, ?);" ;
 
 
-    private static final String QUERY_CONFIGURATION = "";
+    private static final String QUERY_CONFIGURATION =
+            "select update_time, todo_cron_flag from " + CONFIGURATION_TABLE_NAME;
 
+    private static final String INSERT_CONFIGURATION_VALUE =
+            "insert into " + CONFIGURATION_TABLE_NAME + "(update_time, todo_cron_flag)" +
+            " values (?, ?)";
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
@@ -85,6 +93,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context applicationContext) {
         super(applicationContext, DB, null, DB_VERSION);
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -95,6 +104,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_TASK_TABLE);
         db.execSQL(CREATE_TODO_TABLE);
+
+        setDefaultConfigurationValue(db);
+    }
+
+    private void setDefaultConfigurationValue(SQLiteDatabase db) {
+
+        String args[] = new String[2];
+
+        args[0] = String.format("%02d", DEFAULT_CONFIGURATION_UPDATE_HOUR) + ":" + String.format("%02d", DEFAULT_CONFIGURATION_UPDATE_MIN);
+        args[1] = String.valueOf(booleanToDBInt(DEFAULT_CONFIGURATION_UPDATE_FLAG));
+
+        db.execSQL(INSERT_CONFIGURATION_VALUE, args);
     }
 
     @Override
