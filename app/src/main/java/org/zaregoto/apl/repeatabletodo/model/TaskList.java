@@ -121,21 +121,29 @@ public class TaskList {
     }
 
 
-    public static TaskList readTaskListFromFile(Context context) {
+    public static TaskList readTaskListFromDatabase(Context context) {
         TaskList tasklist = null;
 
-        try {
-            tasklist = readTaskListFromFile(context, DEFAULT_TASKLIST_FILENAME);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return tasklist;
     }
+
+
+//    public static TaskList readTaskListFromFile(Context context) {
+//        TaskList tasklist = null;
+//
+//        try {
+//            tasklist = readTaskListFromFile(context, DEFAULT_TASKLIST_FILENAME);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (XmlPullParserException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return tasklist;
+//    }
 
 
     public static void writeTaskListToFile(Context context, TaskList tasklist) throws ParserConfigurationException, IOException, TransformerException {

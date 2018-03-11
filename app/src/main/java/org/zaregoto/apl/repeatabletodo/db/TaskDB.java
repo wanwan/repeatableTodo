@@ -2,6 +2,7 @@ package org.zaregoto.apl.repeatabletodo.db;
 
 import android.content.Context;
 import org.zaregoto.apl.repeatabletodo.model.Task;
+import org.zaregoto.apl.repeatabletodo.model.TaskList;
 
 import java.util.Date;
 
@@ -39,5 +40,25 @@ public class TaskDB {
                 dbhelper.close();
             }
         }
+    }
+
+
+    public static TaskList readAllTaskList(Context context) {
+
+        DBHelper dbhelper = null;
+        TaskList ret;
+
+
+        try {
+            dbhelper = new DBHelper(context.getApplicationContext());
+            ret = dbhelper.queryAllTaskList();
+
+        } finally {
+            if (null != dbhelper) {
+                dbhelper.close();
+            }
+        }
+
+        return ret;
     }
 }

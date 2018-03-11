@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import org.zaregoto.apl.repeatabletodo.model.Task;
+import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
 
 import java.text.ParseException;
@@ -31,25 +32,25 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TASK_TABLE =
             "create table " + TASK_TABLE_NAME + " (" +
-            "task_id integer primary key autoincrement, " +
-            "task_name string not null," +
-            "task_detail string," +
-            "task_repeat_count int, " +
-            "task_repeat_unit string, " +
-            "task_repeat_flag BOOLEAN not null, " +
-            "task_last_date string check (task_last_date like '____-__-__'), " +
-            "task_enable BOOLEAN not null" +
+            " task_id integer primary key autoincrement, " +
+            " task_name string not null," +
+            " task_detail string," +
+            " task_repeat_count int, " +
+            " task_repeat_unit string, " +
+            " task_repeat_flag BOOLEAN not null, " +
+            " task_last_date string check (task_last_date like '____-__-__'), " +
+            " task_enable BOOLEAN not null" +
             ");";
 
     private static final String CREATE_TODO_TABLE =
             "create table " + TODO_TABLE_NAME + " (" +
-            "task_id integer, " +
-            "todo_date string not null check (todo_date like '____-__-__')," +
-            "todo_name string not null," +
-            "todo_detail string," +
-            "todo_done BOOLEAN," +
-            "primary key (task_id, todo_date), " +
-            "foreign key (task_id) references tasklist(task_id) " +
+            " task_id integer, " +
+            " todo_date string not null check (todo_date like '____-__-__')," +
+            " todo_name string not null," +
+            " todo_detail string," +
+            " todo_done BOOLEAN," +
+            " primary key (task_id, todo_date), " +
+            " foreign key (task_id) references tasklist(task_id) " +
             ");";
 
     private static final String CREATE_CONFIGURATION_TABLE =
@@ -60,13 +61,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String QUERY_SEQ_NO = "select seq from sqlite_sequence where name = ?";
 
+    private static final String QUERY_TASK_TABLE =
+            "select task_id, task_name, task_detail, task_repeat_count, task_repeat_unit, task_repeat_flag, task_last_date, task_enable" +
+            " from " + TASK_TABLE_NAME + "order by task_id";
+
     private static final String INSERT_TASK_TABLE
             = "insert into " + TASK_TABLE_NAME + "(task_name, task_detail, task_repeat_count, task_repeat_unit, task_repeat_flag, task_last_date, task_enable) " +
             " values (?, ?, ?, ?, ?, ?, ?);" ;
     private static final String UPDATE_TASK_TABLE
             = "update " + TASK_TABLE_NAME + " set task_name=?, task_detail=?, task_repeat_count=?, task_repeat_unit=?, task_repeat_flag=?, task_last_date=?, task_enable=? " +
             " where id=?;" ;
-
 
 
     private static final String QUERY_TODO_TABLE_BY_DAY
@@ -200,6 +204,54 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+
+    public TaskList queryAllTaskList() {
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        int ret = -1;
+
+        int taskId;
+        String taskName;
+        String taskDetail;
+        int taskRepeatCount;
+        Task.REPEAT_UNIT taskRepeatUnit;
+        boolean taskRepeatFlag;
+        boolean taskEnableTask;
+        Date taskLastDate;
+
+        try {
+            db = getReadableDatabase();
+
+            cursor = db.rawQuery(QUERY_TASK_TABLE, null);
+            if (null != cursor && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                do {
+                            "  int, " +
+                            "  string, " +
+                            " task_repeat_flag BOOLEAN not null, " +
+                            " task_last_date string check (task_last_date like '____-__-__'), " +
+                            " task_enable BOOLEAN not null" +
+
+                    taskId = cursor.getInt(cursor.getColumnIndex("task_id"));
+                    taskName = cursor.getString(cursor.getColumnIndex("task_name"));
+                    taskDetail = cursor.getString(cursor.getColumnIndex("task_detail"));
+                    taskRepeatCount = cursor.getInt(cursor.getColumnIndex("task_repeat_count"));
+                    taskRepeatUnit = Task.REPEAT_UNIT.getUnitFromString(cursor.getString(cursor.getColumnIndex("task_repeat_unit")));
+                    taskRepeatFlag = cursor.getInt(cursor.)
+
+                } while (cursor.moveToNext());
+            }
+
+        }
+        finally {
+            if (null != db && db.isOpen()) {
+                db.close();
+            }
+        }
+
+        return ret;
+    }
 
     public int insertTask(String _name, String _detail, int _repeatCount, Task.REPEAT_UNIT _repeatUnit, boolean _repeatFlag, Date _lastDate, boolean _enableTask) {
 
@@ -357,4 +409,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public void updateTodoCronFlag(boolean flag) {
 
     }
+
+
 }
