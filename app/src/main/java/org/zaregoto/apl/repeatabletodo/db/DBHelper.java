@@ -54,8 +54,8 @@ public class DBHelper extends SQLiteOpenHelper {
             ");";
 
     private static final String CREATE_CONFIGURATION_TABLE =
-            "create table" + CONFIGURATION_TABLE_NAME + " (" +
-            " update_time string check (__:__), " +
+            "create table " + CONFIGURATION_TABLE_NAME + " (" +
+            " update_time string check (update_time like '__:__'), " +
             " todo_cron_flag BOOLEAN " +
             ");";
 
@@ -63,7 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String QUERY_TASK_TABLE =
             "select task_id, task_name, task_detail, task_repeat_count, task_repeat_unit, task_repeat_flag, task_last_date, task_enable" +
-            " from " + TASK_TABLE_NAME + "order by task_id";
+            " from " + TASK_TABLE_NAME + " order by task_id";
 
     private static final String INSERT_TASK_TABLE
             = "insert into " + TASK_TABLE_NAME + "(task_name, task_detail, task_repeat_count, task_repeat_unit, task_repeat_flag, task_last_date, task_enable) " +
@@ -207,9 +207,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public TaskList queryAllTaskList() {
 
+        TaskList ret = new TaskList("");
         SQLiteDatabase db = null;
         Cursor cursor = null;
-        int ret = -1;
 
         int taskId;
         String taskName;
@@ -217,8 +217,10 @@ public class DBHelper extends SQLiteOpenHelper {
         int taskRepeatCount;
         Task.REPEAT_UNIT taskRepeatUnit;
         boolean taskRepeatFlag;
-        boolean taskEnableTask;
+        boolean taskEnable;
         Date taskLastDate;
+
+        Task task;
 
         try {
             db = getReadableDatabase();
@@ -227,18 +229,18 @@ public class DBHelper extends SQLiteOpenHelper {
             if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
-                            "  int, " +
-                            "  string, " +
-                            " task_repeat_flag BOOLEAN not null, " +
-                            " task_last_date string check (task_last_date like '____-__-__'), " +
-                            " task_enable BOOLEAN not null" +
-
                     taskId = cursor.getInt(cursor.getColumnIndex("task_id"));
                     taskName = cursor.getString(cursor.getColumnIndex("task_name"));
                     taskDetail = cursor.getString(cursor.getColumnIndex("task_detail"));
                     taskRepeatCount = cursor.getInt(cursor.getColumnIndex("task_repeat_count"));
                     taskRepeatUnit = Task.REPEAT_UNIT.getUnitFromString(cursor.getString(cursor.getColumnIndex("task_repeat_unit")));
-                    taskRepeatFlag = cursor.getInt(cursor.)
+                    taskRepeatFlag = dBIntToBoolean(cursor.getInt(cursor.getColumnIndex("task_repeat_flag")));
+                    taskLastDate = dBStrToDate(cursor.getString(cursor.getColumnIndex("task_last_date")));
+                    taskEnable = dBIntToBoolean(cursor.getInt(cursor.getColumnIndex("task_enable")));
+
+                    task = new Task(taskId, taskName, taskDetail, taskRepeatCount, taskRepeatUnit, taskRepeatFlag, taskEnable, taskLastDate);
+
+                    ret.addTask(task);
 
                 } while (cursor.moveToNext());
             }

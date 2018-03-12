@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import org.zaregoto.apl.repeatabletodo.db.TaskDB;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
@@ -87,7 +88,8 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        TaskList tasklist = TaskList.readTaskListFromFile(this);
+        //TaskList tasklist = TaskList.readTaskListFromFile(this);
+        TaskList tasklist = TaskDB.readAllTaskList(this);
         ((MainApplication)getApplication()).setTaskList(tasklist);
 
         mRecyclerView = findViewById(R.id.todoListView);
