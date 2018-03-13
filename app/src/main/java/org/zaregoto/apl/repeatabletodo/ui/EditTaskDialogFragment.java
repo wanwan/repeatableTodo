@@ -126,7 +126,12 @@ public class EditTaskDialogFragment extends DialogFragment {
                 _repeatFlag = repeatFlagCheck.isChecked();
 
                 _enableTask = true;
-                _lastDate = new Date();
+                if (mode == EDIT_TASK_DIALOG_MODE.NEW_TASK) {
+                    _lastDate = null;
+                }
+                else {
+                    _lastDate = new Date();
+                }
 
                 task = Task.generateTask(getActivity(), _name, _detail, _repeatCount, _repeatUnit, _repeatFlag, _enableTask, _lastDate);
                 if (null != task) {
