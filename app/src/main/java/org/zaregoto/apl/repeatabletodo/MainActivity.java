@@ -15,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import org.zaregoto.apl.repeatabletodo.db.TaskDB;
+import org.zaregoto.apl.repeatabletodo.db.TodoDB;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
@@ -99,7 +100,8 @@ public class MainActivity extends AppCompatActivity
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(llm);
 
-        mTodoList = new ArrayList<>();
+        //mTodoList = new ArrayList<>();
+        mTodoList = TodoDB.loadData(this);
         mAdapter = new TodoListAdapter(mTodoList);
         if (null != mRecyclerView) {
             mRecyclerView.setAdapter(mAdapter);
@@ -188,6 +190,9 @@ public class MainActivity extends AppCompatActivity
             if (null != mAdapter) {
                 mAdapter.notifyDataSetChanged();
             }
+
+            TodoDB.saveData(this, todolist);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
