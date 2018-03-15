@@ -6,9 +6,11 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +24,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
-public class EditTaskListActivity extends Activity implements EditTaskDialogFragment.EditTaskCallback {
+public class EditTaskListActivity extends AppCompatActivity implements EditTaskDialogFragment.EditTaskCallback {
 
     //private TaskList mTaskList;
     private TaskListAdapter adapter = null;
@@ -32,6 +34,9 @@ public class EditTaskListActivity extends Activity implements EditTaskDialogFrag
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_edit_task);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_task);
         fab.setOnClickListener(new View.OnClickListener() {
