@@ -1,5 +1,6 @@
 package org.zaregoto.apl.repeatabletodo;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
 import org.zaregoto.apl.repeatabletodo.db.TaskDB;
 import org.zaregoto.apl.repeatabletodo.db.TodoDB;
 import org.zaregoto.apl.repeatabletodo.model.Task;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<Todo> mTodoList = null;
     private TodoListAdapter mAdapter = null;
     private RecyclerView mRecyclerView = null;
+
+    private Calendar mShowDate = new GregorianCalendar();
 
     private int RESULT_CODE_EDIT_TASKS = 1;
 
@@ -167,8 +172,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_show_by_date) {
+
+            DatePickerDialog dialog = new DatePickerDialog(MainActivity.this,
+                    new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                            mShowDate.set(year, month, dayOfMonth);
+                        }
+                    },
+                    mShowDate.get(Calendar.YEAR),
+                    mShowDate.get(Calendar.MONTH),
+                    mShowDate.get(Calendar.DATE)
+
+            );
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
