@@ -10,10 +10,7 @@ import org.zaregoto.apl.repeatabletodo.model.Todo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
+import java.util.*;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -138,15 +135,15 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<Todo> queryTodoListToday() {
+    public ArrayList<Todo> queryTodoListToday(Calendar today) {
 
         ArrayList<Todo> ret = new ArrayList();
         Todo todo;
 
         Cursor cursor = null;
         SQLiteDatabase db = null;
-        Date today = new Date();
-        String[] args = new String[]{dateToDBStr(today)};
+        //Date today = new Date();
+        String[] args = new String[]{calendarToDBStr(today)};
 
         try {
             db = getReadableDatabase();
@@ -377,6 +374,18 @@ public class DBHelper extends SQLiteOpenHelper {
             ret = 1;
         }
 
+        return ret;
+    }
+
+
+    private static String calendarToDBStr(Calendar date) {
+
+        String ret = null;
+
+        if (null != date) {
+            //ret = sdf.format(date);
+            ret = String.format("%04d-%02d-%02d", date.get(Calendar.YEAR), date.get(Calendar.MONTH)+1, date.get(Calendar.DATE));
+        }
         return ret;
     }
 

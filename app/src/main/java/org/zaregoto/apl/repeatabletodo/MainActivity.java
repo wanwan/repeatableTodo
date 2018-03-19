@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(llm);
 
         //mTodoList = new ArrayList<>();
-        mTodoList = TodoDB.loadData(this);
+        mTodoList = TodoDB.loadData(this, mShowDate);
         mAdapter = new TodoListAdapter(mTodoList);
         if (null != mRecyclerView) {
             mRecyclerView.setAdapter(mAdapter);
@@ -184,8 +184,8 @@ public class MainActivity extends AppCompatActivity
                     mShowDate.get(Calendar.YEAR),
                     mShowDate.get(Calendar.MONTH),
                     mShowDate.get(Calendar.DATE)
-
             );
+            dialog.show();
 
         } else if (id == R.id.nav_gallery) {
 
