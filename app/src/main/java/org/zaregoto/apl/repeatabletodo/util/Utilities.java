@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -45,6 +46,18 @@ public class Utilities {
     public static Date strToDate(String str) throws ParseException {
         Date date = sdf.parse(str);
         return date;
+    }
+
+
+    public static String calendarToStr(Calendar c) {
+        String ret = "";
+
+        if (null != c) {
+            ret = String.format(Locale.getDefault(), "%04d-%02d-%02d",
+                    c.get(Calendar.YEAR), c.get(Calendar.MONTH) + 1, c.get(Calendar.DATE));
+        }
+
+        return ret;
     }
 
 }

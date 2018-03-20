@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import org.zaregoto.apl.repeatabletodo.db.TaskDB;
 import org.zaregoto.apl.repeatabletodo.db.TodoDB;
 import org.zaregoto.apl.repeatabletodo.model.Task;
@@ -114,6 +115,19 @@ public class MainActivity extends AppCompatActivity
             (new ItemTouchHelper(callback)).attachToRecyclerView(mRecyclerView);
         }
 
+        updateListViewType();
+
+    }
+
+    private void updateListViewType() {
+
+        TextView tv = findViewById(R.id.todoListType);
+        String s;
+
+        if (null != mShowDate && null != tv) {
+            s = Utilities.calendarToStr(mShowDate);
+            tv.setText(s);
+        }
     }
 
 
