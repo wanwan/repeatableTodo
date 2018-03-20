@@ -74,7 +74,7 @@ public class DBHelper extends SQLiteOpenHelper {
             = "select " +
             "   " + TODO_TABLE_NAME + ".task_id as task_id, task_name, task_detail, task_repeat_count, task_repeat_unit, task_repeat_flag, task_last_date, task_enable," +
             "   todo_date, todo_name, todo_detail, todo_done " +
-            " from " + TODO_TABLE_NAME + " left outer join " + TASK_TABLE_NAME +
+            " from " + TODO_TABLE_NAME + " left outer join " + TASK_TABLE_NAME + " on " + TODO_TABLE_NAME + ".task_id = " + TASK_TABLE_NAME + ".task_id " +
             " where todo_date = ?;" ;
     private static final String REPLACE_TODO_TABLE_BY_DAY
             = "replace into " + TODO_TABLE_NAME + "(task_id, todo_date, todo_name, todo_detail, todo_done) " +
