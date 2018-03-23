@@ -45,6 +45,10 @@ public class Todo {
     public Date getDate() {
         return date;
     }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 }
 
 

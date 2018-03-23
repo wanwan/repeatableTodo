@@ -42,4 +42,23 @@ public class TodoDB {
         }
     }
 
+
+    public static void complete(Context context, Todo todo) {
+
+        DBHelper dbhelper = null;
+
+        if (null != todo) {
+            todo.setDone(true);
+            try {
+                dbhelper = new DBHelper(context.getApplicationContext());
+                dbhelper.updateTodo(todo);
+
+            } finally {
+                if (null != dbhelper) {
+                    dbhelper.close();
+                }
+            }
+        }
+    }
+
 }

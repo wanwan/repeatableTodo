@@ -79,7 +79,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String REPLACE_TODO_TABLE_BY_DAY
             = "replace into " + TODO_TABLE_NAME + "(task_id, todo_date, todo_name, todo_detail, todo_done) " +
             " values (?, ?, ?, ?, ?);" ;
-
+    private static final String UPDATE_TODO_TABLE
+            = "update " + TODO_TABLE_NAME + " set todo_name=?, todo_detail=?, todo_done=? " +
+            " where task_id=? and todo_date=?;" ;
 
     private static final String QUERY_CONFIGURATION =
             "select update_time, todo_cron_flag from " + CONFIGURATION_TABLE_NAME;
@@ -169,6 +171,34 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return ret;
+    }
+
+
+    public void updateTodo(Todo todo) {
+
+        SQLiteDatabase db = null;
+        //Date today = new Date();
+        String[] args = new String[5];
+
+        if (null != todo) {
+            try {
+                db = getWritableDatabase();
+
+                args[0] = todo.getName();
+                args[1] = todo.getDetail();
+                args[2] = String.valueOf(booleanToDBInt(todo.isDone()));
+                args[3] = String.valueOf(todo.getTaskId());
+                args[4] = dateToDBStr(todo.getDate());
+
+                db.execSQL(UPDATE_TODO_TABLE, args);
+
+                db.setTransactionSuccessful();
+            } finally {
+                if (null != db) {
+                    db.close();
+                }
+            }
+        }
     }
 
 

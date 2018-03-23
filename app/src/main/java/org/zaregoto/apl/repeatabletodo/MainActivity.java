@@ -140,9 +140,12 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
 
+
             // 横にスワイプされたら要素を消す
             int swipedPosition = viewHolder.getAdapterPosition();
             TodoListAdapter adapter = (TodoListAdapter) mRecyclerView.getAdapter();
+
+
             mAdapter.remove(swipedPosition);
         }
     };
