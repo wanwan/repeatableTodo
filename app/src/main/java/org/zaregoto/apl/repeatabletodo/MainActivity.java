@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import org.zaregoto.apl.repeatabletodo.db.TaskDB;
@@ -147,7 +146,7 @@ public class MainActivity extends AppCompatActivity
 
             Todo todo = mTodoList.get(swipedPosition);
             todo.setDone(true);
-            TodoDB.complete(MainActivity.this, todo);
+            TodoDB.update(MainActivity.this, todo);
 
             mAdapter.remove(swipedPosition);
         }

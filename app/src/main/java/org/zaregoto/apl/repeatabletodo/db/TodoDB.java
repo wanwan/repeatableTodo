@@ -43,7 +43,7 @@ public class TodoDB {
     }
 
 
-    public static void complete(Context context, Todo todo) {
+    public static void update(Context context, Todo todo) {
 
         DBHelper dbhelper = null;
 
