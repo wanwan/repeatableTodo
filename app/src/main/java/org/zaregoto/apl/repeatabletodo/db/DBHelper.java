@@ -191,8 +191,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 args[4] = dateToDBStr(todo.getDate());
 
                 db.execSQL(UPDATE_TODO_TABLE, args);
-
-                db.setTransactionSuccessful();
+                
             } finally {
                 if (null != db) {
                     db.close();

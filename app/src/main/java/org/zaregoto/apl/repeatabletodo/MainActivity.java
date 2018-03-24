@@ -145,6 +145,9 @@ public class MainActivity extends AppCompatActivity
             int swipedPosition = viewHolder.getAdapterPosition();
             TodoListAdapter adapter = (TodoListAdapter) mRecyclerView.getAdapter();
 
+            Todo todo = mTodoList.get(swipedPosition);
+            todo.setDone(true);
+            TodoDB.complete(MainActivity.this, todo);
 
             mAdapter.remove(swipedPosition);
         }
