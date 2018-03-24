@@ -1,6 +1,7 @@
 package org.zaregoto.apl.repeatabletodo;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -13,10 +14,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.*;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 import org.zaregoto.apl.repeatabletodo.db.TaskDB;
 import org.zaregoto.apl.repeatabletodo.db.TodoDB;
 import org.zaregoto.apl.repeatabletodo.model.Task;
@@ -30,6 +32,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static org.zaregoto.apl.repeatabletodo.MainActivity.SHOW_MODE.MODE_SHOW_ALL;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -41,6 +45,15 @@ public class MainActivity extends AppCompatActivity
     private Calendar mShowDate = new GregorianCalendar();
 
     private int RESULT_CODE_EDIT_TASKS = 1;
+
+    enum SHOW_MODE {
+        MODE_SHOW_ALL,
+        MODE_SHOW_NOT_DONE_ONLY,
+        MODE_SHOW_DONE_ONLY
+    }
+
+    private SHOW_MODE mMode = MODE_SHOW_ALL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +118,32 @@ public class MainActivity extends AppCompatActivity
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(llm);
 
+//        mRecyclerView.addOnItemTouchListener(new RecyclerItemDoubleClickListener(this, new OnItemDoubleClickListener() {
+//            @Override
+//            public void onItemDoubleClick(View view, int position) {
+//                Toast.makeText(MainActivity.this, "double clicked", Toast.LENGTH_LONG).show();
+//            }
+//        }));
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                //Log.d("TEST", "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
+
+            private GestureDetector gestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    //Log.d("TEST", "onDoubleTap");
+                    toggleShowMode();
+                    return super.onDoubleTap(e);
+                }
+            });
+        });
+
+
         //mTodoList = new ArrayList<>();
         mTodoList = TodoDB.loadData(this, mShowDate);
         mAdapter = new TodoListAdapter(mTodoList);
@@ -127,6 +166,27 @@ public class MainActivity extends AppCompatActivity
             s = Utilities.calendarToStr(mShowDate);
             tv.setText(s);
         }
+    }
+
+
+    private void toggleShowMode() {
+
+        SHOW_MODE next = SHOW_MODE.MODE_SHOW_ALL;
+
+        for (SHOW_MODE s : SHOW_MODE.values()) {
+            if (s == mMode) {
+                if (s.ordinal() == SHOW_MODE.values().length - 1) {
+                    next = SHOW_MODE.class.getEnumConstants()[0];
+                }
+                else {
+                    next = SHOW_MODE.class.getEnumConstants()[s.ordinal()+1];
+                }
+            }
+        }
+
+        Log.d(TAG, "toggle Show Mode from " + mMode.name() + " to " + next.name());
+
+        mMode = next;
     }
 
 
@@ -299,6 +359,44 @@ public class MainActivity extends AppCompatActivity
         }
 
         return ret;
+    }
+
+
+
+    public interface OnItemDoubleClickListener {
+        public void onItemDoubleClick(View view, int position);
+    }
+
+
+    public class RecyclerItemDoubleClickListener implements RecyclerView.OnItemTouchListener {
+
+        private OnItemDoubleClickListener doubleClickListener;
+
+        GestureDetector mGestureDetector;
+
+        public RecyclerItemDoubleClickListener(Context context, OnItemDoubleClickListener listener) {
+            doubleClickListener = listener;
+            mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override public boolean onDoubleTap(MotionEvent e) {
+                    return true;
+                }
+            });
+        }
+
+        @Override public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+            View childView = view.findChildViewUnder(e.getX(), e.getY());
+            if (childView != null && doubleClickListener != null && mGestureDetector.onTouchEvent(e)) {
+                doubleClickListener.onItemDoubleClick(childView, view.getChildPosition(childView));
+            }
+            return false;
+        }
+
+        @Override public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
     }
 
 }
