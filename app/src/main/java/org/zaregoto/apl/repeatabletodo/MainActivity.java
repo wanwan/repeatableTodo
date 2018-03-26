@@ -152,10 +152,17 @@ public class MainActivity extends AppCompatActivity
 
             (new ItemTouchHelper(callback)).attachToRecyclerView(mRecyclerView);
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         updateListViewType();
-
     }
+
+
 
     private void updateListViewType() {
 
