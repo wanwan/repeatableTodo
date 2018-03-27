@@ -1,12 +1,10 @@
 package org.zaregoto.apl.repeatabletodo;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
 
 import java.util.List;
@@ -14,20 +12,20 @@ import java.util.List;
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.ContactViewHolder> {
 
     private LayoutInflater mInflater;
-    private List<Todo> contactList;
+    private List<Todo> mTodoList;
 
     public TodoListAdapter(List<Todo> contactList) {
-        this.contactList = contactList;
+        this.mTodoList = contactList;
     }
 
     @Override
     public int getItemCount() {
-        return contactList.size();
+        return mTodoList.size();
     }
 
     @Override
     public void onBindViewHolder(TodoListAdapter.ContactViewHolder contactViewHolder, int i) {
-        Todo todo = contactList.get(i);
+        Todo todo = mTodoList.get(i);
         contactViewHolder.todoName.setText(todo.getName());
         contactViewHolder.todoDetail.setText(todo.getDetail());
     }
@@ -43,16 +41,16 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.Contac
 
 
     public void remove(int position) {
-        contactList.remove(position);
+        mTodoList.remove(position);
         notifyItemRemoved(position);
     }
 
 
-    public class ContactViewHolder extends RecyclerView.ViewHolder {
+    class ContactViewHolder extends RecyclerView.ViewHolder {
         TextView todoName;
         TextView todoDetail;
 
-        public ContactViewHolder(View v) {
+        ContactViewHolder(View v) {
             super(v);
             todoName =  (TextView) v.findViewById(R.id.todoname);
             todoDetail = (TextView)  v.findViewById(R.id.tododetail);
