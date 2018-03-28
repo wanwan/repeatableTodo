@@ -28,6 +28,10 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.Contac
         Todo todo = mTodoList.get(i);
         contactViewHolder.todoName.setText(todo.getName());
         contactViewHolder.todoDetail.setText(todo.getDetail());
+        if (todo.isDone()) {
+            contactViewHolder.todoName.setEnabled(false);
+            contactViewHolder.todoDetail.setEnabled(false);
+        }
     }
 
     @Override
