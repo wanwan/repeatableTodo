@@ -368,45 +368,4 @@ public class MainActivity extends AppCompatActivity
         return ret;
     }
 
-
-
-    public interface OnItemDoubleClickListener {
-        void onItemDoubleClick(View view, int position);
-    }
-
-
-    public class RecyclerItemDoubleClickListener implements RecyclerView.OnItemTouchListener {
-
-        private OnItemDoubleClickListener doubleClickListener;
-
-        GestureDetector mGestureDetector;
-
-        public RecyclerItemDoubleClickListener(Context context, OnItemDoubleClickListener listener) {
-            doubleClickListener = listener;
-            mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onDoubleTap(MotionEvent e) {
-                    return true;
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
-            View childView = view.findChildViewUnder(e.getX(), e.getY());
-            if (childView != null && doubleClickListener != null && mGestureDetector.onTouchEvent(e)) {
-                doubleClickListener.onItemDoubleClick(childView, view.getChildPosition(childView));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
-
 }
