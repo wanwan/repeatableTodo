@@ -26,6 +26,7 @@
                 android:name=".EditTaskListActivity"
                 android:label="Edit Task"/>
         <activity android:name=".ConfigurationActivity" />
+        <service android:name=".service.TimerService"/>
     </application>
 
 </manifest>
