@@ -24,6 +24,7 @@ import org.zaregoto.apl.repeatabletodo.db.TodoDB;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
+import org.zaregoto.apl.repeatabletodo.service.TimerService;
 import org.zaregoto.apl.repeatabletodo.util.Utilities;
 
 import java.io.*;
@@ -154,6 +155,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startService(new Intent(this, TimerService.class));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
+
 
     @Override
     protected void onResume() {
@@ -161,7 +175,6 @@ public class MainActivity extends AppCompatActivity
 
         updateListViewType();
     }
-
 
 
     private void updateListViewType() {
