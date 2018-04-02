@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import org.zaregoto.apl.repeatabletodo.model.Configuration;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
@@ -354,6 +355,48 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return ret;
     }
+
+
+    public Configuration queryConfiguration() {
+
+        Configuration ret = null;
+
+        Cursor cursor = null;
+        SQLiteDatabase db = null;
+        String[] args = null;
+
+        try {
+            db = getReadableDatabase();
+            cursor = db.rawQuery(QUERY_CONFIGURATION, args);
+
+            if (null != cursor) {
+                cursor.moveToFirst();
+                if (cursor.getCount() > 0) {
+                    String str = cursor.getString(cursor.getColumnIndex("update_time"));
+                    int i = cursor.getInt(cursor.getColumnIndex("todo_cron_flag"));
+
+                    int _updateTimeHour = Integer.parseInt(str.split(":")[0]);
+                    int _updateTimeMin = Integer.parseInt(str.split(":")[1]);
+                    boolean _todoCronFlag = dBIntToBoolean(i);
+
+                    ret = new Configuration(_updateTimeHour, _updateTimeMin, _todoCronFlag);
+                }
+            }
+        }
+        finally {
+            if (null != cursor && !cursor.isClosed()) {
+                cursor.close();
+            }
+            if (null != db) {
+                db.close();
+            }
+        }
+
+        return ret;
+    }
+
+
+
 
 
 
