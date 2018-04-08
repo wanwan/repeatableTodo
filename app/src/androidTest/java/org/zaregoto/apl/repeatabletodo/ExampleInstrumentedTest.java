@@ -1,4 +1,4 @@
-package apl.zaregoto.org.repeatabletodo;
+package org.zaregoto.apl.repeatabletodo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("apl.zaregoto.org.repeatabletodo", appContext.getPackageName());
+        assertEquals("org.zaregoto.apl.repeatabletodo", appContext.getPackageName());
     }
 }

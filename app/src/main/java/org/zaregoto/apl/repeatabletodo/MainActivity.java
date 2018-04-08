@@ -19,8 +19,10 @@ import android.view.*;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.zaregoto.apl.repeatabletodo.db.ConfigurationDB;
 import org.zaregoto.apl.repeatabletodo.db.TaskDB;
 import org.zaregoto.apl.repeatabletodo.db.TodoDB;
+import org.zaregoto.apl.repeatabletodo.model.Configuration;
 import org.zaregoto.apl.repeatabletodo.model.Task;
 import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
@@ -108,7 +110,9 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        //TaskList tasklist = TaskList.readTaskListFromFile(this);
+        Configuration configuration = ConfigurationDB.queryConfiguration(this);
+        ((MainApplication)getApplication()).setConfiguration(configuration);
+
         TaskList tasklist = TaskDB.readAllTaskList(this);
         ((MainApplication)getApplication()).setTaskList(tasklist);
 
