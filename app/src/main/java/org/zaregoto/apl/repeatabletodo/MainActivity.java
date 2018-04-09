@@ -303,8 +303,9 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(intent, RESULT_CODE_EDIT_TASKS);
 
         } else if (id == R.id.nav_test_make_todo) {
+            Date today = new Date();
             mTodoList.clear();
-            ArrayList<Todo> todolist = createTodoListFromTaskList();
+            ArrayList<Todo> todolist = TodoDB.createTodoListFromTaskList(this, today);
             mTodoList.addAll(todolist);
             if (null != mAdapter) {
                 mAdapter.notifyDataSetChanged();
@@ -319,68 +320,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    // TODO: これをどこにおくかは要検討
-    private ArrayList<Todo> createTodoListFromTaskList() {
-        Date today = new Date();
-        TaskList tasklist = ((MainApplication)getApplication()).getTaskList();
-        ArrayList<Todo> todolist = new ArrayList<>();
 
-        if (null != tasklist && tasklist.getTasks().size() > 0) {
-
-            Todo todo;
-            for (Task task : tasklist.getTasks()) {
-                if (isTaskOver(task, today)) {
-                    todo = createTodoFromTask(task, today);
-                    todolist.add(todo);
-                }
-            }
-        }
-
-        return todolist;
-    }
-
-    private Todo createTodoFromTask(Task task, Date today) {
-
-        Todo todo = new Todo(task, today);
-        return todo;
-    }
-
-    private boolean isTaskOver(Task task, Date today) {
-
-        boolean ret = false;
-        Calendar cLastday = new GregorianCalendar();
-        Calendar cToday = new GregorianCalendar();
-
-        if (null == task.getLastDate()) {
-            ret = true;
-        }
-        else {
-            if (task.isRepeatFlag()) {
-                cLastday.setTime(task.getLastDate());
-                switch (task.getRepeatUnit()) {
-                    case DAILY:
-                        cLastday.add(Calendar.DAY_OF_MONTH, task.getRepeatCount());
-                        break;
-                    case WEEKLY:
-                        cLastday.add(Calendar.DAY_OF_MONTH, task.getRepeatCount()*7);
-                        break;
-                    case MONTHLY:
-                        cLastday.add(Calendar.MONTH, task.getRepeatCount());
-                        break;
-                    default:
-                        break;
-                }
-
-                if (cToday.after(cLastday)) {
-                    ret = true;
-                }
-            }
-            else {
-                // TODO:
-            }
-        }
-
-        return ret;
-    }
 
 }

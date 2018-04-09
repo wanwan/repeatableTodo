@@ -2,6 +2,8 @@ package org.zaregoto.apl.repeatabletodo.model;
 
 public class Configuration {
 
+    private static final int HOUR_THRESHOLD_TO_MAKE_NEXT_DAY = 12;
+
     private int updateTimeHour;
     private int updateTimeMin;
     private boolean todoCronFlag;
@@ -37,5 +39,13 @@ public class Configuration {
 
     public void setTodoCronFlag(boolean todoCronFlag) {
         this.todoCronFlag = todoCronFlag;
+    }
+
+    public boolean isTimeOverThreshold() {
+
+        if (updateTimeHour > HOUR_THRESHOLD_TO_MAKE_NEXT_DAY) {
+            return true;
+        }
+        return false;
     }
 }

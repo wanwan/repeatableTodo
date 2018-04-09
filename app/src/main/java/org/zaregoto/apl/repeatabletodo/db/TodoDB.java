@@ -1,10 +1,15 @@
 package org.zaregoto.apl.repeatabletodo.db;
 
 import android.content.Context;
+import org.zaregoto.apl.repeatabletodo.MainApplication;
+import org.zaregoto.apl.repeatabletodo.model.Task;
+import org.zaregoto.apl.repeatabletodo.model.TaskList;
 import org.zaregoto.apl.repeatabletodo.model.Todo;
+import org.zaregoto.apl.repeatabletodo.util.Utilities;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class TodoDB {
 
@@ -60,5 +65,31 @@ public class TodoDB {
             }
         }
     }
+
+
+    public static ArrayList<Todo> createTodoListFromTaskList(Context context, Date day) {
+        TaskList tasklist = ((MainApplication)context.getApplicationContext()).getTaskList();
+        ArrayList<Todo> todolist = new ArrayList<>();
+
+        if (null != tasklist && tasklist.getTasks().size() > 0) {
+
+            Todo todo;
+            for (Task task : tasklist.getTasks()) {
+                if (Utilities.isTaskOver(task, day)) {
+                    todo = createTodoFromTask(task, day);
+                    todolist.add(todo);
+                }
+            }
+        }
+
+        return todolist;
+    }
+
+    public static Todo createTodoFromTask(Task task, Date today) {
+
+        Todo todo = new Todo(task, today);
+        return todo;
+    }
+
 
 }

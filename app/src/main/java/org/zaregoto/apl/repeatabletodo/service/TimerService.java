@@ -1,11 +1,15 @@
 package org.zaregoto.apl.repeatabletodo.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import org.zaregoto.apl.repeatabletodo.MainApplication;
+import org.zaregoto.apl.repeatabletodo.db.TodoDB;
+import org.zaregoto.apl.repeatabletodo.model.Configuration;
+import org.zaregoto.apl.repeatabletodo.model.Todo;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class TimerService extends Service {
 
@@ -22,9 +26,9 @@ public class TimerService extends Service {
 
         if (null == mTimer) {
             //タイマーの初期化処理
-            timerTask = new TodoMakeTimerTask();
-            mTimer = new Timer(true);
-            mTimer.schedule( timerTask, TIMER_DELAY_MS, TIMER_PERIOD_MS);
+            //timerTask = new TodoMakeTimerTask();
+            //mTimer = new Timer(true);
+            //mTimer.schedule( timerTask, TIMER_DELAY_MS, TIMER_PERIOD_MS);
         }
 
         return null;
@@ -33,7 +37,28 @@ public class TimerService extends Service {
     private class TodoMakeTimerTask extends TimerTask {
         @Override
         public void run() {
+            MainApplication context = (MainApplication) getApplicationContext();
+            Configuration configuration = null;
+            if (null != context) {
+                configuration = context.getConfiguration();
+            }
 
+            if (null != configuration && configuration.isTimeOverThreshold()) {
+
+                Date day = new Date();
+                Calendar c = GregorianCalendar.getInstance();
+                c.setTime(day);
+                c.add(Calendar.DATE, 1);
+                Date tomorrow = c.getTime();
+
+                ArrayList<Todo> todolist = TodoDB.createTodoListFromTaskList(TimerService.this, tomorrow);
+
+            }
+            else {
+
+                Date today = new Date();
+                ArrayList<Todo> todolist = TodoDB.createTodoListFromTaskList(TimerService.this, today);
+            }
         }
     }
 }
