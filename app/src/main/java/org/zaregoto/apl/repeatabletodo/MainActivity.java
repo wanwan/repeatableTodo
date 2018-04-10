@@ -312,7 +312,6 @@ public class MainActivity extends AppCompatActivity
             }
 
             TodoDB.saveData(this, todolist);
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -68,7 +68,7 @@ public class DBHelper extends SQLiteOpenHelper {
             " values (?, ?, ?, ?, ?, ?, ?);" ;
     private static final String UPDATE_TASK_TABLE
             = "update " + TASK_TABLE_NAME + " set task_name=?, task_detail=?, task_repeat_count=?, task_repeat_unit=?, task_repeat_flag=?, task_last_date=?, task_enable=? " +
-            " where id=?;" ;
+            " where task_id=?;" ;
 
 
     private static final String QUERY_TODO_TABLE_BY_DAY

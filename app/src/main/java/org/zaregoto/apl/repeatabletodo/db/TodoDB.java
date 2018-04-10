@@ -39,7 +39,10 @@ public class TodoDB {
         try {
             dbhelper = new DBHelper(context.getApplicationContext());
             dbhelper.insertTodoListToday(todolist);
-
+            for (Todo todo: todolist) {
+                Task task = todo.getTask();
+                dbhelper.updateTask(task);
+            }
         } finally {
             if (null != dbhelper) {
                 dbhelper.close();
@@ -76,6 +79,7 @@ public class TodoDB {
             Todo todo;
             for (Task task : tasklist.getTasks()) {
                 if (Utilities.isTaskOver(task, day)) {
+                    task.setLastDate(day);
                     todo = createTodoFromTask(task, day);
                     todolist.add(todo);
                 }
@@ -85,7 +89,7 @@ public class TodoDB {
         return todolist;
     }
 
-    public static Todo createTodoFromTask(Task task, Date today) {
+    private static Todo createTodoFromTask(Task task, Date today) {
 
         Todo todo = new Todo(task, today);
         return todo;
