@@ -35,10 +35,14 @@ public class TimerService extends Service {
     }
 
     private class TodoMakeTimerTask extends TimerTask {
+
         @Override
         public void run() {
+
+            ArrayList<Todo> todolist = null;
             MainApplication context = (MainApplication) getApplicationContext();
             Configuration configuration = null;
+
             if (null != context) {
                 configuration = context.getConfiguration();
             }
@@ -51,14 +55,14 @@ public class TimerService extends Service {
                 c.add(Calendar.DATE, 1);
                 Date tomorrow = c.getTime();
 
-                ArrayList<Todo> todolist = TodoDB.createTodoListFromTaskList(TimerService.this, tomorrow);
-
+                todolist = TodoDB.createTodoListFromTaskList(TimerService.this, tomorrow);
             }
             else {
 
                 Date today = new Date();
-                ArrayList<Todo> todolist = TodoDB.createTodoListFromTaskList(TimerService.this, today);
+                todolist = TodoDB.createTodoListFromTaskList(TimerService.this, today);
             }
+            TodoDB.saveData(TimerService.this, todolist);
         }
     }
 }
