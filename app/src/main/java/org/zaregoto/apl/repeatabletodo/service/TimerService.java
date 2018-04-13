@@ -26,9 +26,10 @@ public class TimerService extends Service {
 
         if (null == mTimer) {
             //タイマーの初期化処理
-            //timerTask = new TodoMakeTimerTask();
-            //mTimer = new Timer(true);
-            //mTimer.schedule( timerTask, TIMER_DELAY_MS, TIMER_PERIOD_MS);
+
+            timerTask = new TodoMakeTimerTask();
+            mTimer = new Timer(true);
+            mTimer.schedule( timerTask, TIMER_DELAY_MS, TIMER_PERIOD_MS);
         }
 
         return null;
