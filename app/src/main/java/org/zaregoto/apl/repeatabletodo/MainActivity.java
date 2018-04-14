@@ -1,10 +1,13 @@
 package org.zaregoto.apl.repeatabletodo;
 
 import android.app.DatePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -44,8 +47,9 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<Todo> mTodoList = null;
     private TodoListAdapter mAdapter = null;
     private RecyclerView mRecyclerView = null;
-
     private Calendar mShowDate = new GregorianCalendar();
+    private TimerService mTimerService;
+
 
     private int RESULT_CODE_EDIT_TASKS = 1;
 
@@ -162,11 +166,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        startService(new Intent(this, TimerService.class));
+        //startService(new Intent(this, TimerService.class));
+        doBindService();;
     }
 
     @Override
     protected void onStop() {
+        doUnbindService();
         super.onStop();
     }
 
@@ -176,6 +182,32 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
 
         updateListViewType();
+    }
+
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
+
+
+
+    private void doBindService() {
+        bindService(new Intent(MainActivity.this,
+                TimerService.class), mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void doUnbindService() {
+        if (null != mConnection) {
+            unbindService(mConnection);
+        }
     }
 
 
@@ -318,7 +350,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
 }
